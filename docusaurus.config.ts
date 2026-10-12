@@ -1,9 +1,12 @@
-﻿import { themes as prismThemes } from 'prism-react-renderer';
+﻿
+import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import type * as OpenApiPlugin from 'docusaurus-plugin-openapi-docs';
 
 const year = new Date().getFullYear();
+
+const GITHUB_REPO = 'https://github.com/SprintAfrica1/sprint-docs';
 
 const config: Config = {
   title: 'Sprint Connect API',
@@ -30,7 +33,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/SprintAfrica1/sprint-docs/tree/main/',
+          editUrl: `${GITHUB_REPO}/tree/main/`,
           docItemComponent: '@theme/ApiItem',
         },
         blog: false,
@@ -107,13 +110,12 @@ const config: Config = {
           label: 'Merchant Portal',
         },
         {
-          href: 'https://github.com/SprintAfrica1/sprint-docs',
+          href: GITHUB_REPO,
           position: 'right',
           className: 'header-github-link',
-          'aria-label': 'GitHub repository',
+          'aria-label': 'Sprint Connect API documentation GitHub repository',
         },
         {
-          // External URL: use `href`, not `to`.
           href: 'https://sprintafrica.com.ng/merchant/signup',
           position: 'right',
           label: 'Get Started',
@@ -136,7 +138,10 @@ const config: Config = {
             { label: 'Rate quotes', to: '/docs/api/rates-create' },
             { label: 'Shipments', to: '/docs/api/shipments-create' },
             { label: 'Tracking', to: '/docs/api/tracking-read' },
-            { label: 'Bulk deliveries', to: '/docs/guides/send-a-bulk-batch' },
+            {
+              label: 'Bulk deliveries',
+              to: '/docs/guides/send-a-bulk-batch',
+            },
           ],
         },
         {
@@ -148,27 +153,48 @@ const config: Config = {
             { label: 'Authentication', to: '/docs/authentication' },
             { label: 'Error handling', to: '/docs/guides/errors' },
             { label: 'Sandbox', to: '/docs/sandbox/get-a-sandbox-key' },
+            {
+              label: 'GitHub Repository',
+              href: GITHUB_REPO,
+            },
           ],
         },
         {
           title: 'Sprint Africa',
           items: [
             { label: 'Home', href: 'https://sprintafrica.com.ng' },
-            { label: 'Merchant Portal', href: 'https://sprintafrica.com.ng/merchant' },
-            { label: 'Track a parcel', href: 'https://sprintafrica.com.ng/track' },
-            { label: 'Rate card', href: 'https://sprintafrica.com.ng/rate-card' },
+            {
+              label: 'Merchant Portal',
+              href: 'https://sprintafrica.com.ng/merchant',
+            },
+            {
+              label: 'Track a parcel',
+              href: 'https://sprintafrica.com.ng/track',
+            },
+            {
+              label: 'Rate card',
+              href: 'https://sprintafrica.com.ng/rate-card',
+            },
           ],
         },
         {
           title: 'Company',
           items: [
-            { label: 'Contact', href: 'https://sprintafrica.com.ng/contact' },
-            { label: 'Terms', href: 'https://sprintafrica.com.ng/terms' },
-            { label: 'Privacy', href: 'https://sprintafrica.com.ng/privacy' },
+            {
+              label: 'Contact',
+              href: 'https://sprintafrica.com.ng/contact',
+            },
+            {
+              label: 'Terms',
+              href: 'https://sprintafrica.com.ng/terms',
+            },
+            {
+              label: 'Privacy',
+              href: 'https://sprintafrica.com.ng/privacy',
+            },
           ],
         },
       ],
-      // Rendered as HTML inside the footer brand card (see custom.css).
       copyright: `
         <p class="sc-foot-tag">Sprint Connect by Sprint Africa. One API to simplify logistics integration across Nigeria.</p>
         <ul class="sc-foot-chips">
@@ -183,7 +209,16 @@ const config: Config = {
     prism: {
       theme: prismThemes.oneLight,
       darkTheme: prismThemes.oneDark,
-      additionalLanguages: ['bash', 'json', 'python', 'php', 'ruby', 'go', 'java', 'csharp'],
+      additionalLanguages: [
+        'bash',
+        'json',
+        'python',
+        'php',
+        'ruby',
+        'go',
+        'java',
+        'csharp',
+      ],
     },
 
     tableOfContents: {
