@@ -1,43 +1,23 @@
-# Website
+# Sprint Connect API Documentation
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+Public documentation site for the Sprint Connect API, the merchant facing shipping API for Sprint Africa.
 
-## Installation
+Live at https://docs.sprintafrica.com.ng
+
+## What this repo is
+
+A Docusaurus site that renders:
+
+- Guides: how to use Sprint Connect, written for merchant developers.
+- Sandbox: step by step walkthroughs for getting a test key and making your first request.
+- API Reference: auto generated from the live OpenAPI schema served at https://api.sprintafrica.com.ng/swagger.json.
+
+The API reference is not hand written. Every page under docs/api/ is generated from openapi.yaml, which is fetched from the production API schema at build time. If an endpoint changes on the backend, the docs pick it up on the next deploy.
+
+## Local development
+
+Requires Node.js 20 or newer.
 
 ```bash
 npm install
-```
-
-**Note**: feel free to use the package manager of your choice.
-
-## Local Development
-
-```bash
 npm run start
-```
-
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-## Build
-
-```bash
-npm run build
-```
-
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
-
-## Deployment
-
-Using SSH:
-
-```bash
-USE_SSH=true npm run deploy
-```
-
-Not using SSH:
-
-```bash
-GIT_USER=<Your GitHub username> npm run deploy
-```
-
-If you are using GitHub Pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
