@@ -1,0 +1,1 @@
+{"parameters":[{"name":"cursor","in":"query","description":"ISO-8601 timestamp. Return rows created before this.","required":false,"schema":{"type":"string"}},{"name":"limit","in":"query","description":"Rows per page. Default 50, max 100.","required":false,"schema":{"type":"integer"}}]}

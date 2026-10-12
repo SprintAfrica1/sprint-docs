@@ -1,0 +1,1 @@
+{"responses":{"200":{"description":"Batch contents."},"401":{"description":"Missing or invalid API key."},"404":{"description":"No shipments found for this batch_id."}}}

@@ -1,0 +1,70 @@
+---
+id: local-bulk-shipments-create
+title: "Create a bulk local shipment"
+description: "Create a batch of Lagos same-city shipments from a signed bulk local quote_id. Requires an Idempotency-Key header. Debits the merchant's prepaid balance once for the batch total plus commission."
+sidebar_label: "Create a bulk local shipment"
+hide_title: true
+hide_table_of_contents: true
+api: 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
+sidebar_class_name: "post api-method"
+info_path: docs/api/sprint-connect-api
+custom_edit_url: null
+proxy: https://api.sprintafrica.com.ng
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create a bulk local shipment"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/local/bulk/shipments"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create a batch of Lagos same-city shipments from a signed bulk local quote_id. Requires an Idempotency-Key header. Debits the merchant's prepaid balance once for the batch total plus commission.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+>
+  <Translate id="theme.openapi.request.title">Request</Translate>
+</Heading>
+
+<ParamsDetails
+  {...require("./local-bulk-shipments-create.ParamsDetails.json")}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  {...require("./local-bulk-shipments-create.RequestSchema.json")}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  {...require("./local-bulk-shipments-create.StatusCodes.json")}
+>
+  
+</StatusCodes>
+
+
+      

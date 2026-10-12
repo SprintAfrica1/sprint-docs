@@ -1,0 +1,1 @@
+{"parameters":[{"name":"Idempotency-Key","in":"header","description":"Opaque string. Retries with the same key are safe.","required":true,"schema":{"type":"string"}}]}

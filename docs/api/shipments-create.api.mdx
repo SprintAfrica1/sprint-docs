@@ -1,0 +1,70 @@
+---
+id: shipments-create
+title: "Create a shipment"
+description: "Create an interstate shipment for the merchant using a signed quote_id obtained from POST /v1/rates. The request must include an Idempotency-Key header. Repeating a request with the same key is safe and returns the original result; reusing the key with a different request body returns a conflict. The merchant's prepaid balance is debited atomically with shipment creation. The shipment is assigned to the environment of the authenticating API key."
+sidebar_label: "Create a shipment"
+hide_title: true
+hide_table_of_contents: true
+api: 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
+sidebar_class_name: "post api-method"
+info_path: docs/api/sprint-connect-api
+custom_edit_url: null
+proxy: https://api.sprintafrica.com.ng
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create a shipment"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/shipments"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create an interstate shipment for the merchant using a signed quote_id obtained from POST /v1/rates. The request must include an Idempotency-Key header. Repeating a request with the same key is safe and returns the original result; reusing the key with a different request body returns a conflict. The merchant's prepaid balance is debited atomically with shipment creation. The shipment is assigned to the environment of the authenticating API key.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+>
+  <Translate id="theme.openapi.request.title">Request</Translate>
+</Heading>
+
+<ParamsDetails
+  {...require("./shipments-create.ParamsDetails.json")}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  {...require("./shipments-create.RequestSchema.json")}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  {...require("./shipments-create.StatusCodes.json")}
+>
+  
+</StatusCodes>
+
+
+      

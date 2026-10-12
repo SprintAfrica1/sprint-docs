@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Linear Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#023077" />
+      <stop offset="100%" stop-color="#011638" />
+    </linearGradient>
+
+    <!-- S-Arrow Shadow Effect -->
+    <filter id="dropShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="2" dy="5" stdDeviation="6" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Base Rounded App Icon Frame -->
+  <rect x="32" y="32" width="448" height="448" rx="110" fill="url(#bgGrad)" />
+
+  <!-- S-Shaped Delivery Road Path (Yellow) -->
+  <g filter="url(#dropShadow)">
+    <!-- Main S-Road Ribbon -->
+    <path d="M 330 145 
+             C 170 145, 140 240, 240 255 
+             C 350 270, 310 370, 150 355" 
+          fill="none" stroke="#FFD000" stroke-width="62" stroke-linecap="butt" stroke-linejoin="round" />
+
+    <!-- Top Forward Arrow Head -->
+    <path d="M 315 114 L 365 145 L 315 176 Z" fill="#FFD000" />
+
+    <!-- Bottom Return Arrow Head -->
+    <path d="M 165 324 L 115 355 L 165 386 Z" fill="#FFD000" />
+    
+    <!-- Inner Ribbon Shading Layer to give depth/fold look -->
+    <path d="M 230 253 C 280 260, 315 300, 280 340" fill="none" stroke="#E6A100" stroke-width="62" stroke-linecap="butt" opacity="0.3" />
+  </g>
+
+  <!-- Dashed Road Lanes (White) -->
+  <g>
+    <path d="M 320 145 
+             C 170 145, 140 240, 240 255 
+             C 350 270, 310 370, 160 355" 
+          fill="none" stroke="#FFFFFF" stroke-width="4" stroke-dasharray="14,12" stroke-linecap="round" opacity="0.9" />
+  </g>
+
+  <!-- Storefront Marketplace Icon (White) -->
+  <g transform="translate(10, 5)" filter="url(#dropShadow)">
+    <!-- Store Awning/Roof Base Background -->
+    <path d="M 250 315 L 390 315 L 415 340 L 225 340 Z" fill="#011638" opacity="0.2" />
+    
+    <!-- Main Building Walls -->
+    <rect x="262" y="335" width="116" height="78" rx="8" fill="#FFFFFF" />
+    
+    <!-- Building Door Cutout -->
+    <rect x="282" y="365" width="34" height="48" rx="3" fill="#012055" />
+    
+    <!-- Building Window Cutout -->
+    <rect x="334" y="365" width="28" height="26" rx="3" fill="#012055" />
+
+    <!-- Store Awning Stripes Roof Structure -->
+    <!-- Total width approx 240 to 400 -->
+    <path d="M 245 340 C 242 340, 240 336, 244 324 L 256 280 C 258 274, 264 270, 272 270 L 372 270 C 380 270, 386 274, 388 280 L 400 324 C 404 336, 402 340, 399 340 C 394 340, 390 334, 390 324 L 382 272 L 362 272 L 366 324 C 366 335, 362 340, 357 340 C 352 340, 348 335, 348 324 L 344 272 L 324 272 L 324 324 C 324 335, 320 340, 315 340 C 310 340, 306 335, 306 324 L 302 272 L 282 272 L 278 324 C 278 335, 274 340, 269 340 C 264 340, 260 335, 260 324 L 254 272 Z" fill="#FFFFFF" />
+    
+    <!-- Fine tuning awning cuts visually using matching background color strips -->
+    <path d="M 264 270 L 274 340 M 294 270 L 298 340 M 324 270 L 324 340 M 354 270 L 350 340 M 378 270 L 372 340" stroke="#01225C" stroke-width="10" stroke-linecap="round" />
+  </g>
+</svg>

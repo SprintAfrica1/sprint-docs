@@ -1,0 +1,70 @@
+---
+id: local-shipments-create
+title: "Create a local shipment"
+description: "Create a Lagos same-city shipment from a signed local quote_id. Requires an Idempotency-Key header. Debits the merchant's prepaid balance atomically with order creation."
+sidebar_label: "Create a local shipment"
+hide_title: true
+hide_table_of_contents: true
+api: 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
+sidebar_class_name: "post api-method"
+info_path: docs/api/sprint-connect-api
+custom_edit_url: null
+proxy: https://api.sprintafrica.com.ng
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create a local shipment"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/local/shipments"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create a Lagos same-city shipment from a signed local quote_id. Requires an Idempotency-Key header. Debits the merchant's prepaid balance atomically with order creation.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+>
+  <Translate id="theme.openapi.request.title">Request</Translate>
+</Heading>
+
+<ParamsDetails
+  {...require("./local-shipments-create.ParamsDetails.json")}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  {...require("./local-shipments-create.RequestSchema.json")}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  {...require("./local-shipments-create.StatusCodes.json")}
+>
+  
+</StatusCodes>
+
+
+      

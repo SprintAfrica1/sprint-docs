@@ -1,0 +1,70 @@
+---
+id: local-rates-create
+title: "Request a local quote"
+description: "Compute a zone-based price for a Lagos pickup and dropoff pair. Returns a signed quote_id that must be passed to POST /v1/local/shipments. No weight input — the local rate card is zone-based and the vehicle class is derived from package_type."
+sidebar_label: "Request a local quote"
+hide_title: true
+hide_table_of_contents: true
+api: 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
+sidebar_class_name: "post api-method"
+info_path: docs/api/sprint-connect-api
+custom_edit_url: null
+proxy: https://api.sprintafrica.com.ng
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Request a local quote"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/local/rates"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Compute a zone-based price for a Lagos pickup and dropoff pair. Returns a signed quote_id that must be passed to POST /v1/local/shipments. No weight input — the local rate card is zone-based and the vehicle class is derived from package_type.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+>
+  <Translate id="theme.openapi.request.title">Request</Translate>
+</Heading>
+
+<ParamsDetails
+  {...require("./local-rates-create.ParamsDetails.json")}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  {...require("./local-rates-create.RequestSchema.json")}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  {...require("./local-rates-create.StatusCodes.json")}
+>
+  
+</StatusCodes>
+
+
+      

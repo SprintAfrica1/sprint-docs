@@ -1,0 +1,428 @@
+/* src/components/SprintMap/styles.module.css
+   The map is a navy "instrument" surface in both themes. */
+
+.frame {
+  --m-navy: #001f3f;
+  --m-blue: #0056b3;
+  --m-blue-light: #4ea0ff;
+  --m-yellow: #ffd700;
+  --m-text: #e8eefb;
+  --m-muted: #9fb1cf;
+
+  position: relative;
+  width: 100%;
+  aspect-ratio: 600 / 480;
+  border-radius: 24px;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--m-text);
+  background:
+    radial-gradient(90% 70% at 70% 0%, rgba(0, 86, 179, 0.4), transparent 65%),
+    linear-gradient(160deg, #04284d 0%, #001a35 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 40px 80px -30px rgba(0, 20, 50, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.frame[data-variant='network'] {
+  aspect-ratio: 600 / 440;
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(40% 40% at 18% 78%, rgba(255, 215, 0, 0.08), transparent 70%);
+  pointer-events: none;
+}
+
+.svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.land {
+  opacity: 0.95;
+}
+
+.dot {
+  fill: rgba(120, 170, 235, 0.28);
+}
+
+.outline {
+  fill: none;
+  stroke: rgba(130, 180, 245, 0.55);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+
+/* Routes */
+.routeBase {
+  fill: none;
+  stroke: rgba(130, 180, 245, 0.2);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 6;
+}
+
+.routeIdle,
+.routeActive,
+.routeDone,
+.routeStatic {
+  fill: none;
+  stroke-linecap: butt;
+  transition: opacity 0.6s ease, stroke 0.6s ease;
+}
+
+.routeIdle {
+  opacity: 0;
+}
+
+.routeActive {
+  stroke: var(--m-blue-light);
+  stroke-width: 2.6;
+  opacity: 1;
+  filter: drop-shadow(0 0 5px rgba(78, 160, 255, 0.7));
+}
+
+.routeDone {
+  stroke: rgba(130, 180, 245, 0.45);
+  stroke-width: 1.8;
+  opacity: 1;
+}
+
+.routeStatic {
+  stroke: rgba(130, 180, 245, 0.6);
+  stroke-width: 1.8;
+  opacity: 1;
+}
+
+/* Nodes */
+.node,
+.nodeVisited,
+.nodeTarget,
+.nodeDelivered,
+.hub {
+  stroke-width: 2;
+  transition: fill 0.4s ease, stroke 0.4s ease;
+}
+
+.node {
+  fill: var(--m-navy);
+  stroke: rgba(160, 200, 255, 0.8);
+}
+
+.nodeVisited {
+  fill: var(--m-navy);
+  stroke: rgba(255, 215, 0, 0.7);
+}
+
+.nodeTarget {
+  fill: var(--m-navy);
+  stroke: var(--m-blue-light);
+}
+
+.nodeDelivered {
+  fill: var(--m-yellow);
+  stroke: #fff;
+}
+
+.hub {
+  fill: var(--m-yellow);
+  stroke: #fff;
+}
+
+.hubPulse,
+.deliveredPulse {
+  fill: none;
+  stroke: var(--m-yellow);
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ping 2.6s ease-out infinite;
+}
+
+.deliveredPulse {
+  animation-duration: 1.4s;
+  animation-iteration-count: 2;
+}
+
+@keyframes ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(4.2);
+    opacity: 0;
+  }
+}
+
+.label,
+.labelHub {
+  font-family: var(--heading, 'Lexend', system-ui, sans-serif);
+  font-size: 12px;
+  font-weight: 500;
+  fill: var(--m-text);
+  paint-order: stroke;
+  stroke: #03203f;
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.labelHub {
+  font-weight: 700;
+  fill: #fff;
+}
+
+/* Package marker */
+.marker {
+  transition: opacity 0.4s ease;
+}
+
+.markerHalo {
+  fill: rgba(255, 215, 0, 0.22);
+}
+
+.markerCore {
+  fill: var(--m-yellow);
+  stroke: #fff;
+  stroke-width: 1.4;
+}
+
+.marker[data-stage='transit'] .markerHalo {
+  animation: haloBeat 1.2s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes haloBeat {
+  0%,
+  100% {
+    transform: scale(0.85);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+/* Glass overlays */
+.demoBadge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--m-muted);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+}
+
+.card {
+  position: absolute;
+  padding: 0.8rem 0.95rem;
+  background: rgba(8, 28, 56, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  box-shadow:
+    0 14px 30px -12px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.cardMain {
+  top: 14px;
+  left: 14px;
+  width: min(236px, 46%);
+}
+
+.cardSteps {
+  left: 14px;
+  bottom: 14px;
+  min-width: 150px;
+}
+
+.cardBulk {
+  right: 14px;
+  bottom: 14px;
+}
+
+.cardEyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--m-yellow);
+}
+
+.cardRoute {
+  margin: 0 0 0.55rem;
+  font-family: var(--heading, 'Lexend', system-ui, sans-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.cardId {
+  font-family: var(--mono, 'JetBrains Mono', ui-monospace, monospace);
+  font-size: 0.68rem;
+  color: var(--m-muted);
+}
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.18rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #dbe9ff;
+  background: rgba(78, 160, 255, 0.18);
+  border: 1px solid rgba(78, 160, 255, 0.45);
+  border-radius: 999px;
+}
+
+.statusPill[data-stage='pickup'] {
+  color: #e8eefb;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.statusPill[data-stage='delivered'] {
+  color: #001f3f;
+  background: var(--m-yellow);
+  border-color: var(--m-yellow);
+}
+
+.statusIcon {
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+.progress {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.progressBar {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--m-blue-light), var(--m-yellow));
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--m-muted);
+}
+
+.step[data-state='current'] {
+  color: #fff;
+  font-weight: 600;
+}
+
+.step[data-state='done'] {
+  color: #dbe9ff;
+}
+
+.stepMark {
+  display: inline-grid;
+  place-items: center;
+  width: 1rem;
+  font-size: 0.7rem;
+}
+
+.step[data-state='done'] .stepMark,
+.step[data-state='current'] .stepMark {
+  color: var(--m-yellow);
+}
+
+@media (max-width: 996px) {
+  .frame {
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .cardSteps,
+  .cardBulk {
+    display: none;
+  }
+
+  .cardMain {
+    width: 62%;
+    padding: 0.65rem 0.75rem;
+  }
+
+  .cardRoute {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .demoBadge {
+    top: auto;
+    bottom: 12px;
+    right: 12px;
+  }
+
+  .label,
+  .labelHub {
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hubPulse,
+  .deliveredPulse,
+  .marker[data-stage='transit'] .markerHalo {
+    animation: none;
+  }
+
+  .routeIdle,
+  .routeActive,
+  .routeDone,
+  .routeStatic {
+    transition: none;
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

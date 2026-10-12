@@ -1,0 +1,70 @@
+---
+id: rates-create
+title: "Get a delivery quote"
+description: "Compute a delivery fee for an interstate parcel. Returns a signed quote_id that must be passed to POST /v1/shipments. Quotes expire after 300 seconds."
+sidebar_label: "Get a delivery quote"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNV1Fz2zYM/is4Pmt2kvZuNz0tzXq9bG2Txen6kMv5YAmS2EikSkJOPJ//+w6kZMuxt3a5PSwvsUgAJIAPH8C1si05ZG3NZa5S5ZDJzzNHyKQSlZPPnG5lW6XqwjZtxwQIOdV6SW4FBREU1gEa0IbJeUYmaNFlVE/ghrhzxgOC16WhHL52lmmuc+AKGZrOMyxE3HvKgS1cX81uYbo8nfpKtw0Z9hP4XXQ80FOrHQEWTA5enZyAp8ya3E9Uohx97cjzG5uvVLpWmTVMhuUntm2ts+Df9IsXL9bKZxU1KL9ETzvKVXqnrNOlNvPgQPSctQmK27VH0mXF84dS3SeKVy2pVNnFF8pYJap1EknW5MXynrV0rVhzLeJXYR0Gi70Rz06bUiWqwaf3ZEquVHp6cpKoRpvt9+bYpUamf9ltvtT+zsGR3c9hER7KI/YK6xpklaqcMt1grTaJ0n5eOCx1vXe7Sw/D6tbMwtqa0IRoF9jVrNICa0/B06xGR/l8iXX3zM24A3HnO+6UKNPVNS5EnV1Hm02ytfaBXFah4WvrGOsbZLqJWFIbEdsBJCjKgm+t8THJZycn8m+/SAJcIYulkgs6XwTHoVJU8u+QuRf/RLFlrOcFye+sc45MtlKJIsZ5jisfxH1H+RwFw7HGvHx8E+HbC45yE30Pl94PymxU/qBzMqwLTW4C1+g9cKX931T/MQzvY/allfZfV9bLKsl0zYLcy8pmM07vSOdWFiHm/HsKdouLkY2LHVb2M3k5u4LXZ6c/QmZzmsB5/YgrDx/fffyOVG1RNzroLSP0SOy1pY+UQ0wGbO6FRBYhAHb/bp+MfgJqbVYNzQEeKzLAFfXQe0QP0ejk6IGjAhjfMa6+7MjeZN/H4Pb2PWj/vIE9v8k3GCpykFDUJlGvj7HQH1jrPCKWnLNuooLk6aHkB+29NiVYB9osRQ3Ory/hgVa9zqsjOv2dwFgGMkKteRgDYuMHT26pM+oNvD408NGCs2GUWKIO1BzUJWrDBKH7O5/9dKguUYBaN5qBnjKiXPIZgoalF/YUAS8c1qLDhmQwUendfaIa4srKoNNaHzgNBZxqGuYelSi5eRReq87VKlUVc+vT6RRbPfGt04axcDrDSWabiSmny1O1uRfFrHOaV0HzDaEjJyeOt2ZC9JE8B4H1kHls9W8k1Wawke/zjivr9J8hhcLS4nZFmJM7wOCvn29hTx6iIHQhsRLUeB6EVkMxVNJ+bnZz09snbNrIPfuMuqvmIxy52xwR3m5xzGmhsx829kFYqt0Udlx2sxBtuLDGUMaCysO+sieSBF8FvQKmpgepB1tAL3geUwcXYcCF2mZYw7bbwKPmSht4j6X1gCYfz7RbqQT6cRMENLHKfRLEHWG+FQRaxgG2j7IHlPm140raX4ZMeTgQEBYxPX3d9QwFhbNN8GjwBNrAAYEwyDX+qpjFQhvB9BhEg/C0n0QwC9zW42wvLjDrWjlCJc+wf8zoYCtR1KAWaR+1fz4iLemtdUbCWrvDr51tnSZGtxIBKbyYVqmpJJRog2ak8I54/PgIoX+OidH4//99sPRVz/TE07ZGHZp5iPm6p6S7+BQTDquEqtI7tV4v0NMnV282svy1I7eKrLZEp+N8e3e/SQaeECZ6oFWIQ4jID7dyrIjH0juYRjfJoHGeZdTyP8qO2VTCoBK16B9gjc0pPCYf5XGGjypVMseGDAX+C2trVaMpOyxFNtqUv78APw4QJg==
+sidebar_class_name: "post api-method"
+info_path: docs/api/sprint-connect-api
+custom_edit_url: null
+proxy: https://api.sprintafrica.com.ng
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Get a delivery quote"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/rates"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Compute a delivery fee for an interstate parcel. Returns a signed quote_id that must be passed to POST /v1/shipments. Quotes expire after 300 seconds.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+>
+  <Translate id="theme.openapi.request.title">Request</Translate>
+</Heading>
+
+<ParamsDetails
+  {...require("./rates-create.ParamsDetails.json")}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  {...require("./rates-create.RequestSchema.json")}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  {...require("./rates-create.StatusCodes.json")}
+>
+  
+</StatusCodes>
+
+
+      

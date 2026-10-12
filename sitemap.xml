@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://docs.sprintafrica.com.ng/</loc></url>
+
+  <url><loc>https://docs.sprintafrica.com.ng/docs/intro</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/quickstart</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/authentication</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/environments</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/quote-lifecycle</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/idempotency</loc></url>
+
+  <url><loc>https://docs.sprintafrica.com.ng/docs/guides/send-a-single-shipment</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/guides/send-a-bulk-batch</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/guides/local-deliveries</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/guides/track-a-shipment</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/guides/errors</loc></url>
+
+  <url><loc>https://docs.sprintafrica.com.ng/docs/sandbox/get-a-sandbox-key</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/sandbox/your-first-rate-quote</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/sandbox/your-first-shipment</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/sandbox/testing-failure-cases</loc></url>
+
+  <url><loc>https://docs.sprintafrica.com.ng/docs/api/sprint-connect-api</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/api/rates-create</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/api/shipments-list</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/api/shipments-create</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/api/shipments-read</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/api/shipments-events-list</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/api/shipments-catchup-list</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/api/shipments-batch-read</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/api/interstate-bulk-rates-create</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/api/interstate-bulk-shipments-create</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/api/local-rates-create</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/api/local-shipments-create</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/api/local-bulk-rates-create</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/api/local-bulk-shipments-create</loc></url>
+  <url><loc>https://docs.sprintafrica.com.ng/docs/api/tracking-read</loc></url>
+</urlset>

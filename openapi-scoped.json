@@ -1,0 +1,2317 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Sprint Connect API",
+    "description": "Sprint Connect, the API for merchants of Sprint Africa. Create local shipments within Lagos and interstate shipments, request rate quotes, and read shipment events. Requests are authenticated with a bearer API key issued from the merchant portal.",
+    "termsOfService": "https://sprintafrica.com.ng/terms/",
+    "contact": {
+      "name": "Sprint Africa Support",
+      "url": "https://sprintafrica.com.ng/contact",
+      "email": "support@sprintafrica.com.ng"
+    },
+    "license": {
+      "name": "Proprietary"
+    },
+    "version": "v1"
+  },
+  "host": "api.sprintafrica.com.ng",
+  "schemes": [
+    "https"
+  ],
+  "basePath": "/v1",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "JWT Authorization header using the Bearer scheme."
+    }
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ],
+  "paths": {
+    "/interstate/bulk/rates": {
+      "post": {
+        "operationId": "interstate_bulk_rates_create",
+        "summary": "Request a bulk interstate quote",
+        "description": "Compute per-package prices for one pickup and multiple destinations across states. Returns a signed quote_id and per-package pricing. Pass the quote_id to POST /v1/interstate/bulk/shipments.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalInterstateBulkRateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bulk interstate quote.",
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalInterstateBulkRateResponse"
+            }
+          },
+          "400": {
+            "description": "Validation error."
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          },
+          "403": {
+            "description": "Merchant not enabled for parcel service."
+          },
+          "404": {
+            "description": "Route not found for one or more packages."
+          },
+          "429": {
+            "description": "Rate limit exceeded."
+          }
+        },
+        "tags": [
+          "Interstate"
+        ]
+      },
+      "parameters": []
+    },
+    "/interstate/bulk/shipments": {
+      "post": {
+        "operationId": "interstate_bulk_shipments_create",
+        "summary": "Create a bulk interstate shipment",
+        "description": "Create a batch of interstate shipments from a signed bulk quote_id. Requires an Idempotency-Key header. Debits the merchant's prepaid balance once for the batch total plus commission.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalInterstateBulkShipmentCreate"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Opaque string. Retries with the same key are safe.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Idempotent replay — original response."
+          },
+          "201": {
+            "description": "Bulk interstate shipment created.",
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalInterstateBulkShipmentResponse"
+            }
+          },
+          "400": {
+            "description": "Validation error."
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          },
+          "402": {
+            "description": "Insufficient balance."
+          },
+          "403": {
+            "description": "Merchant not enabled."
+          },
+          "409": {
+            "description": "Idempotency-Key reused with a different body."
+          },
+          "429": {
+            "description": "Rate limit exceeded."
+          }
+        },
+        "tags": [
+          "Interstate"
+        ]
+      },
+      "parameters": []
+    },
+    "/local/bulk/rates": {
+      "post": {
+        "operationId": "local_bulk_rates_create",
+        "summary": "Request a bulk local quote",
+        "description": "Compute zone-based prices for one Lagos pickup and multiple Lagos dropoffs. Returns a signed quote_id and per-package pricing. Pass the quote_id to POST /v1/local/bulk/shipments.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalLocalBulkRateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bulk local quote.",
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalLocalBulkRateResponse"
+            }
+          },
+          "400": {
+            "description": "Validation error."
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          },
+          "403": {
+            "description": "Merchant not enabled for parcel service."
+          },
+          "429": {
+            "description": "Rate limit exceeded."
+          }
+        },
+        "tags": [
+          "Local"
+        ]
+      },
+      "parameters": []
+    },
+    "/local/bulk/shipments": {
+      "post": {
+        "operationId": "local_bulk_shipments_create",
+        "summary": "Create a bulk local shipment",
+        "description": "Create a batch of Lagos same-city shipments from a signed bulk local quote_id. Requires an Idempotency-Key header. Debits the merchant's prepaid balance once for the batch total plus commission.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalLocalBulkShipmentCreate"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Opaque string. Retries with the same key are safe.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Idempotent replay — original response."
+          },
+          "201": {
+            "description": "Bulk local shipment created.",
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalLocalBulkShipmentResponse"
+            }
+          },
+          "400": {
+            "description": "Validation error."
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          },
+          "402": {
+            "description": "Insufficient balance."
+          },
+          "403": {
+            "description": "Merchant not enabled."
+          },
+          "409": {
+            "description": "Idempotency-Key reused with a different body."
+          },
+          "429": {
+            "description": "Rate limit exceeded."
+          }
+        },
+        "tags": [
+          "Local"
+        ]
+      },
+      "parameters": []
+    },
+    "/local/rates": {
+      "post": {
+        "operationId": "local_rates_create",
+        "summary": "Request a local quote",
+        "description": "Compute a zone-based price for a Lagos pickup and dropoff pair. Returns a signed quote_id that must be passed to POST /v1/local/shipments. No weight input — the local rate card is zone-based and the vehicle class is derived from package_type.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalLocalRateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Local quote.",
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalLocalRateResponse"
+            }
+          },
+          "400": {
+            "description": "Validation error."
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          },
+          "403": {
+            "description": "Merchant not enabled for parcel service."
+          },
+          "429": {
+            "description": "Rate limit exceeded."
+          }
+        },
+        "tags": [
+          "Local"
+        ]
+      },
+      "parameters": []
+    },
+    "/local/shipments": {
+      "post": {
+        "operationId": "local_shipments_create",
+        "summary": "Create a local shipment",
+        "description": "Create a Lagos same-city shipment from a signed local quote_id. Requires an Idempotency-Key header. Debits the merchant's prepaid balance atomically with order creation.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalLocalShipmentCreate"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Opaque string. Retries with the same key are safe.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Idempotent replay — original response."
+          },
+          "201": {
+            "description": "Local shipment created.",
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalLocalShipmentResponse"
+            }
+          },
+          "400": {
+            "description": "Validation error."
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          },
+          "402": {
+            "description": "Insufficient balance."
+          },
+          "403": {
+            "description": "Merchant not enabled."
+          },
+          "409": {
+            "description": "Idempotency-Key reused with a different body."
+          },
+          "429": {
+            "description": "Rate limit exceeded."
+          }
+        },
+        "tags": [
+          "Local"
+        ]
+      },
+      "parameters": []
+    },
+    "/rates": {
+      "post": {
+        "operationId": "rates_create",
+        "summary": "Get a delivery quote",
+        "description": "Compute a delivery fee for an interstate parcel. Returns a signed quote_id that must be passed to POST /v1/shipments. Quotes expire after 300 seconds.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalRateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Quote computed.",
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalRateResponse"
+            }
+          },
+          "400": {
+            "description": "Validation error."
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          },
+          "403": {
+            "description": "Merchant not enabled for parcel service."
+          },
+          "404": {
+            "description": "No route available for the state pair."
+          },
+          "429": {
+            "description": "Rate limit exceeded."
+          }
+        },
+        "tags": [
+          "Rates"
+        ]
+      },
+      "parameters": []
+    },
+    "/shipments": {
+      "get": {
+        "operationId": "shipments_list",
+        "summary": "List shipments",
+        "description": "Return a cursor-paginated list of the merchant's shipments. The environment is derived from the API key: a test key sees only test shipments, a live key sees only live shipments.",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "ISO-8601 timestamp. Return rows created before this.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Rows per page. Default 50, max 100.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Page of shipments."
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          }
+        },
+        "tags": [
+          "Shipments"
+        ]
+      },
+      "post": {
+        "operationId": "shipments_create",
+        "summary": "Create a shipment",
+        "description": "Create an interstate shipment for the merchant using a signed quote_id obtained from POST /v1/rates. The request must include an Idempotency-Key header. Repeating a request with the same key is safe and returns the original result; reusing the key with a different request body returns a conflict. The merchant's prepaid balance is debited atomically with shipment creation. The shipment is assigned to the environment of the authenticating API key.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalShipmentCreate"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Opaque string. Retries with the same key are safe.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Idempotent replay — original response."
+          },
+          "201": {
+            "description": "Shipment created.",
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalShipmentResponse"
+            }
+          },
+          "400": {
+            "description": "Validation error."
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          },
+          "402": {
+            "description": "Insufficient balance."
+          },
+          "403": {
+            "description": "Merchant not enabled."
+          },
+          "409": {
+            "description": "Idempotency-Key reused with a different body."
+          },
+          "429": {
+            "description": "Rate limit exceeded."
+          }
+        },
+        "tags": [
+          "Shipments"
+        ]
+      },
+      "parameters": []
+    },
+    "/shipments/batch/{batch_id}": {
+      "get": {
+        "operationId": "shipments_batch_read",
+        "summary": "Get a bulk batch",
+        "description": "Return every shipment in a bulk batch, identified by batch_id. Scoped to the authenticated merchant. Batches created via bulk endpoints share a single batch_id; this endpoint returns all of them in one response without pagination.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Batch contents."
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          },
+          "404": {
+            "description": "No shipments found for this batch_id."
+          }
+        },
+        "tags": [
+          "Shipments"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "batch_id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/shipments/catchup": {
+      "get": {
+        "operationId": "shipments_catchup_list",
+        "summary": "Catch up on events",
+        "description": "Retrieve all events that occurred after a cursor. Used to recover after a polling gap.",
+        "parameters": [
+          {
+            "name": "since_cursor",
+            "in": "query",
+            "description": "Opaque cursor from a previous response. Omit to start from the beginning.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Max events. Default 50, max 100.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Events since cursor.",
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalShipmentCatchup"
+            }
+          },
+          "400": {
+            "description": "Invalid cursor."
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          }
+        },
+        "tags": [
+          "Shipments"
+        ]
+      },
+      "parameters": []
+    },
+    "/shipments/{tracking_id}": {
+      "get": {
+        "operationId": "shipments_read",
+        "summary": "Get a shipment",
+        "description": "Fetch a single shipment by tracking ID.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Shipment.",
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalShipmentResponse"
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          },
+          "404": {
+            "description": "Shipment not found."
+          }
+        },
+        "tags": [
+          "Shipments"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "tracking_id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/shipments/{tracking_id}/events": {
+      "get": {
+        "operationId": "shipments_events_list",
+        "summary": "Get events for a shipment",
+        "description": "Chronological list of events for one shipment.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Event list.",
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalShipmentEventList"
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          },
+          "404": {
+            "description": "Shipment not found."
+          }
+        },
+        "tags": [
+          "Shipments"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "tracking_id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/tracking/{tracking_id}": {
+      "get": {
+        "operationId": "tracking_read",
+        "summary": "Track a shipment",
+        "description": "Public tracking lookup by tracking ID. Returns a rich, customer-facing view of the shipment: headline status, journey summary, and a personalised event timeline. No authentication required.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Shipment tracking.",
+            "schema": {
+              "$ref": "#/definitions/MerchantPortalTrackingResponse"
+            }
+          },
+          "404": {
+            "description": "Tracking ID not found."
+          },
+          "429": {
+            "description": "Rate limit exceeded."
+          }
+        },
+        "tags": [
+          "Tracking"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "tracking_id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "MerchantPortalInterstateBulkPackage": {
+      "required": [
+        "destination_state",
+        "dropoff_address",
+        "dropoff_city",
+        "dropoff_contact_name",
+        "dropoff_contact_phone",
+        "weight_kg"
+      ],
+      "type": "object",
+      "properties": {
+        "merchant_reference": {
+          "title": "Merchant reference",
+          "type": "string",
+          "default": "",
+          "maxLength": 100
+        },
+        "destination_state": {
+          "title": "Destination state",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "dropoff_address": {
+          "title": "Dropoff address",
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "dropoff_city": {
+          "title": "Dropoff city",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "dropoff_contact_name": {
+          "title": "Dropoff contact name",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "dropoff_contact_phone": {
+          "title": "Dropoff contact phone",
+          "type": "string",
+          "maxLength": 17,
+          "minLength": 1
+        },
+        "weight_kg": {
+          "title": "Weight kg",
+          "type": "string",
+          "format": "decimal"
+        },
+        "is_fragile": {
+          "title": "Is fragile",
+          "type": "boolean",
+          "default": false
+        },
+        "package_type": {
+          "title": "Package type",
+          "type": "string",
+          "enum": [
+            "document",
+            "small",
+            "medium",
+            "large",
+            "custom"
+          ],
+          "default": "small"
+        },
+        "package_description": {
+          "title": "Package description",
+          "type": "string",
+          "default": "",
+          "maxLength": 500
+        },
+        "declared_value": {
+          "title": "Declared value",
+          "type": "string",
+          "format": "decimal",
+          "x-nullable": true
+        },
+        "special_instructions": {
+          "title": "Special instructions",
+          "type": "string",
+          "default": "",
+          "maxLength": 500
+        }
+      }
+    },
+    "MerchantPortalInterstateBulkRateRequest": {
+      "required": [
+        "pickup_state",
+        "pickup_address",
+        "pickup_city",
+        "pickup_contact_name",
+        "pickup_contact_phone",
+        "packages"
+      ],
+      "type": "object",
+      "properties": {
+        "pickup_state": {
+          "title": "Pickup state",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "pickup_address": {
+          "title": "Pickup address",
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "pickup_city": {
+          "title": "Pickup city",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "pickup_contact_name": {
+          "title": "Pickup contact name",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "pickup_contact_phone": {
+          "title": "Pickup contact phone",
+          "type": "string",
+          "maxLength": 17,
+          "minLength": 1
+        },
+        "packages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MerchantPortalInterstateBulkPackage"
+          }
+        },
+        "shared_pickup_fee": {
+          "title": "Shared pickup fee",
+          "description": "Optional shared pickup fee, divided evenly across the batch. If omitted, the pricing engine's default bulk pickup fee is used.",
+          "type": "string",
+          "format": "decimal",
+          "x-nullable": true
+        }
+      }
+    },
+    "MerchantPortalInterstateBulkRateResponse": {
+      "required": [
+        "quote_id",
+        "pickup_state",
+        "pickup_address",
+        "package_count",
+        "shared_pickup_fee",
+        "pickup_fee_per_package",
+        "total_fee",
+        "currency",
+        "packages",
+        "issued_at",
+        "expires_at"
+      ],
+      "type": "object",
+      "properties": {
+        "quote_id": {
+          "title": "Quote id",
+          "type": "string",
+          "minLength": 1
+        },
+        "pickup_state": {
+          "title": "Pickup state",
+          "type": "string",
+          "minLength": 1
+        },
+        "pickup_address": {
+          "title": "Pickup address",
+          "type": "string",
+          "minLength": 1
+        },
+        "package_count": {
+          "title": "Package count",
+          "type": "integer"
+        },
+        "shared_pickup_fee": {
+          "title": "Shared pickup fee",
+          "type": "string",
+          "format": "decimal"
+        },
+        "pickup_fee_per_package": {
+          "title": "Pickup fee per package",
+          "type": "string",
+          "format": "decimal"
+        },
+        "total_fee": {
+          "title": "Total fee",
+          "type": "string",
+          "format": "decimal"
+        },
+        "currency": {
+          "title": "Currency",
+          "type": "string",
+          "minLength": 1
+        },
+        "packages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "x-nullable": true
+            }
+          }
+        },
+        "issued_at": {
+          "title": "Issued at",
+          "type": "integer"
+        },
+        "expires_at": {
+          "title": "Expires at",
+          "type": "integer"
+        }
+      }
+    },
+    "MerchantPortalInterstateBulkShipmentCreate": {
+      "required": [
+        "quote_id",
+        "pickup_state",
+        "pickup_address",
+        "pickup_city",
+        "pickup_contact_name",
+        "pickup_contact_phone",
+        "packages"
+      ],
+      "type": "object",
+      "properties": {
+        "quote_id": {
+          "title": "Quote id",
+          "type": "string",
+          "maxLength": 2048,
+          "minLength": 1
+        },
+        "pickup_state": {
+          "title": "Pickup state",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "pickup_address": {
+          "title": "Pickup address",
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "pickup_city": {
+          "title": "Pickup city",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "pickup_contact_name": {
+          "title": "Pickup contact name",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "pickup_contact_phone": {
+          "title": "Pickup contact phone",
+          "type": "string",
+          "maxLength": 17,
+          "minLength": 1
+        },
+        "packages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MerchantPortalInterstateBulkPackage"
+          }
+        },
+        "shared_pickup_fee": {
+          "title": "Shared pickup fee",
+          "type": "string",
+          "format": "decimal",
+          "x-nullable": true
+        }
+      }
+    },
+    "MerchantPortalInterstateBulkShipmentResponse": {
+      "required": [
+        "batch_id",
+        "package_count",
+        "total_fee",
+        "commission",
+        "commission_rate",
+        "total_debited",
+        "currency",
+        "pickup_state",
+        "pickup_address",
+        "shared_pickup_fee",
+        "pickup_fee_per_package",
+        "shipments",
+        "balance_after",
+        "created_at"
+      ],
+      "type": "object",
+      "properties": {
+        "batch_id": {
+          "title": "Batch id",
+          "type": "string",
+          "minLength": 1
+        },
+        "package_count": {
+          "title": "Package count",
+          "type": "integer"
+        },
+        "total_fee": {
+          "title": "Total fee",
+          "type": "string",
+          "format": "decimal"
+        },
+        "commission": {
+          "title": "Commission",
+          "type": "string",
+          "format": "decimal"
+        },
+        "commission_rate": {
+          "title": "Commission rate",
+          "type": "string",
+          "minLength": 1
+        },
+        "total_debited": {
+          "title": "Total debited",
+          "type": "string",
+          "format": "decimal"
+        },
+        "currency": {
+          "title": "Currency",
+          "type": "string",
+          "minLength": 1
+        },
+        "pickup_state": {
+          "title": "Pickup state",
+          "type": "string",
+          "minLength": 1
+        },
+        "pickup_address": {
+          "title": "Pickup address",
+          "type": "string",
+          "minLength": 1
+        },
+        "shared_pickup_fee": {
+          "title": "Shared pickup fee",
+          "type": "string",
+          "format": "decimal"
+        },
+        "pickup_fee_per_package": {
+          "title": "Pickup fee per package",
+          "type": "string",
+          "format": "decimal"
+        },
+        "shipments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "x-nullable": true
+            }
+          }
+        },
+        "balance_after": {
+          "title": "Balance after",
+          "type": "string",
+          "format": "decimal"
+        },
+        "created_at": {
+          "title": "Created at",
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "MerchantPortalLocalBulkPackage": {
+      "required": [
+        "dropoff_address",
+        "dropoff_city",
+        "dropoff_contact_name",
+        "dropoff_contact_phone"
+      ],
+      "type": "object",
+      "properties": {
+        "merchant_reference": {
+          "title": "Merchant reference",
+          "description": "Per-package reference. Echoed back in the response for reconciliation.",
+          "type": "string",
+          "default": "",
+          "maxLength": 100
+        },
+        "dropoff_address": {
+          "title": "Dropoff address",
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "dropoff_city": {
+          "title": "Dropoff city",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "dropoff_contact_name": {
+          "title": "Dropoff contact name",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "dropoff_contact_phone": {
+          "title": "Dropoff contact phone",
+          "type": "string",
+          "maxLength": 17,
+          "minLength": 1
+        },
+        "package_type": {
+          "title": "Package type",
+          "type": "string",
+          "enum": [
+            "document",
+            "small",
+            "medium",
+            "large",
+            "custom"
+          ],
+          "default": "small"
+        },
+        "package_description": {
+          "title": "Package description",
+          "type": "string",
+          "default": "",
+          "maxLength": 500
+        },
+        "is_fragile": {
+          "title": "Is fragile",
+          "type": "boolean",
+          "default": false
+        },
+        "special_instructions": {
+          "title": "Special instructions",
+          "type": "string",
+          "default": "",
+          "maxLength": 500
+        }
+      }
+    },
+    "MerchantPortalLocalBulkRateRequest": {
+      "required": [
+        "pickup_address",
+        "packages"
+      ],
+      "type": "object",
+      "properties": {
+        "pickup_address": {
+          "title": "Pickup address",
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "packages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MerchantPortalLocalBulkPackage"
+          }
+        },
+        "shared_pickup_fee": {
+          "title": "Shared pickup fee",
+          "description": "Optional fee divided evenly across the batch. If omitted, each package is priced at the zone-matrix rate with no extra pickup charge.",
+          "type": "string",
+          "format": "decimal",
+          "x-nullable": true
+        }
+      }
+    },
+    "MerchantPortalLocalBulkRateResponse": {
+      "required": [
+        "quote_id",
+        "pickup_zone",
+        "pickup_address",
+        "package_count",
+        "shared_pickup_fee",
+        "pickup_fee_per_package",
+        "total_fee",
+        "currency",
+        "packages",
+        "issued_at",
+        "expires_at"
+      ],
+      "type": "object",
+      "properties": {
+        "quote_id": {
+          "title": "Quote id",
+          "description": "Signed bulk local quote identifier. Pass this to POST /v1/local/bulk/shipments.",
+          "type": "string",
+          "minLength": 1
+        },
+        "pickup_zone": {
+          "title": "Pickup zone",
+          "type": "string",
+          "minLength": 1
+        },
+        "pickup_address": {
+          "title": "Pickup address",
+          "type": "string",
+          "minLength": 1
+        },
+        "package_count": {
+          "title": "Package count",
+          "type": "integer"
+        },
+        "shared_pickup_fee": {
+          "title": "Shared pickup fee",
+          "type": "string",
+          "format": "decimal"
+        },
+        "pickup_fee_per_package": {
+          "title": "Pickup fee per package",
+          "type": "string",
+          "format": "decimal"
+        },
+        "total_fee": {
+          "title": "Total fee",
+          "type": "string",
+          "format": "decimal"
+        },
+        "currency": {
+          "title": "Currency",
+          "type": "string",
+          "minLength": 1
+        },
+        "packages": {
+          "description": "Per-package pricing breakdown.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "x-nullable": true
+            }
+          }
+        },
+        "issued_at": {
+          "title": "Issued at",
+          "type": "integer"
+        },
+        "expires_at": {
+          "title": "Expires at",
+          "type": "integer"
+        }
+      }
+    },
+    "MerchantPortalLocalBulkShipmentCreate": {
+      "required": [
+        "quote_id",
+        "pickup_address",
+        "pickup_city",
+        "pickup_contact_name",
+        "pickup_contact_phone",
+        "packages"
+      ],
+      "type": "object",
+      "properties": {
+        "quote_id": {
+          "title": "Quote id",
+          "description": "Signed quote_id returned by POST /v1/local/bulk/rates.",
+          "type": "string",
+          "maxLength": 2048,
+          "minLength": 1
+        },
+        "pickup_address": {
+          "title": "Pickup address",
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "pickup_city": {
+          "title": "Pickup city",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "pickup_contact_name": {
+          "title": "Pickup contact name",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "pickup_contact_phone": {
+          "title": "Pickup contact phone",
+          "type": "string",
+          "maxLength": 17,
+          "minLength": 1
+        },
+        "packages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MerchantPortalLocalBulkPackage"
+          }
+        }
+      }
+    },
+    "MerchantPortalLocalBulkShipmentResponse": {
+      "required": [
+        "batch_id",
+        "package_count",
+        "total_fee",
+        "commission",
+        "commission_rate",
+        "total_debited",
+        "currency",
+        "pickup_zone",
+        "pickup_address",
+        "shared_pickup_fee",
+        "pickup_fee_per_package",
+        "shipments",
+        "balance_after",
+        "created_at"
+      ],
+      "type": "object",
+      "properties": {
+        "batch_id": {
+          "title": "Batch id",
+          "type": "string",
+          "minLength": 1
+        },
+        "package_count": {
+          "title": "Package count",
+          "type": "integer"
+        },
+        "total_fee": {
+          "title": "Total fee",
+          "type": "string",
+          "format": "decimal"
+        },
+        "commission": {
+          "title": "Commission",
+          "type": "string",
+          "format": "decimal"
+        },
+        "commission_rate": {
+          "title": "Commission rate",
+          "type": "string",
+          "minLength": 1
+        },
+        "total_debited": {
+          "title": "Total debited",
+          "type": "string",
+          "format": "decimal"
+        },
+        "currency": {
+          "title": "Currency",
+          "type": "string",
+          "minLength": 1
+        },
+        "pickup_zone": {
+          "title": "Pickup zone",
+          "type": "string",
+          "minLength": 1
+        },
+        "pickup_address": {
+          "title": "Pickup address",
+          "type": "string",
+          "minLength": 1
+        },
+        "shared_pickup_fee": {
+          "title": "Shared pickup fee",
+          "type": "string",
+          "format": "decimal"
+        },
+        "pickup_fee_per_package": {
+          "title": "Pickup fee per package",
+          "type": "string",
+          "format": "decimal"
+        },
+        "shipments": {
+          "description": "Per-package tracking_id and pricing.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "x-nullable": true
+            }
+          }
+        },
+        "balance_after": {
+          "title": "Balance after",
+          "type": "string",
+          "format": "decimal"
+        },
+        "created_at": {
+          "title": "Created at",
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "MerchantPortalLocalRateRequest": {
+      "required": [
+        "pickup_address",
+        "dropoff_address"
+      ],
+      "type": "object",
+      "properties": {
+        "pickup_address": {
+          "title": "Pickup address",
+          "description": "Full street address of the pickup location, in Lagos.",
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "dropoff_address": {
+          "title": "Dropoff address",
+          "description": "Full street address of the dropoff location, in Lagos.",
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "package_type": {
+          "title": "Package type",
+          "description": "Drives the vehicle class for this delivery: document/small → bike, medium → car, large/custom → van.",
+          "type": "string",
+          "enum": [
+            "document",
+            "small",
+            "medium",
+            "large",
+            "custom"
+          ],
+          "default": "small"
+        },
+        "is_fragile": {
+          "title": "Is fragile",
+          "description": "Adds a ₦1,000 fragile-handling surcharge.",
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "MerchantPortalLocalRateResponse": {
+      "required": [
+        "quote_id",
+        "pickup_zone",
+        "dropoff_zone",
+        "vehicle_type",
+        "pickup_address",
+        "dropoff_address",
+        "package_type",
+        "is_fragile",
+        "total_fee",
+        "currency",
+        "issued_at",
+        "expires_at"
+      ],
+      "type": "object",
+      "properties": {
+        "quote_id": {
+          "title": "Quote id",
+          "description": "Signed local quote identifier. Pass this to POST /v1/local/shipments.",
+          "type": "string",
+          "minLength": 1
+        },
+        "pickup_zone": {
+          "title": "Pickup zone",
+          "description": "Resolved zone for the pickup address (Z1–Z6).",
+          "type": "string",
+          "minLength": 1
+        },
+        "dropoff_zone": {
+          "title": "Dropoff zone",
+          "description": "Resolved zone for the dropoff address (Z1–Z6).",
+          "type": "string",
+          "minLength": 1
+        },
+        "vehicle_type": {
+          "title": "Vehicle type",
+          "description": "Vehicle class derived from package_type: bike, car, or van.",
+          "type": "string",
+          "minLength": 1
+        },
+        "pickup_address": {
+          "title": "Pickup address",
+          "type": "string",
+          "minLength": 1
+        },
+        "dropoff_address": {
+          "title": "Dropoff address",
+          "type": "string",
+          "minLength": 1
+        },
+        "package_type": {
+          "title": "Package type",
+          "type": "string",
+          "minLength": 1
+        },
+        "is_fragile": {
+          "title": "Is fragile",
+          "type": "boolean"
+        },
+        "total_fee": {
+          "title": "Total fee",
+          "type": "string",
+          "format": "decimal"
+        },
+        "currency": {
+          "title": "Currency",
+          "description": "ISO 4217 code. Always NGN.",
+          "type": "string",
+          "minLength": 1
+        },
+        "issued_at": {
+          "title": "Issued at",
+          "description": "Unix epoch seconds when the quote was issued.",
+          "type": "integer"
+        },
+        "expires_at": {
+          "title": "Expires at",
+          "description": "Unix epoch seconds when the quote expires. Quote TTL is 300 seconds.",
+          "type": "integer"
+        }
+      }
+    },
+    "MerchantPortalLocalShipmentCreate": {
+      "required": [
+        "quote_id",
+        "pickup_address",
+        "pickup_city",
+        "pickup_contact_name",
+        "pickup_contact_phone",
+        "dropoff_address",
+        "dropoff_city",
+        "dropoff_contact_name",
+        "dropoff_contact_phone"
+      ],
+      "type": "object",
+      "properties": {
+        "quote_id": {
+          "title": "Quote id",
+          "description": "Signed quote_id returned by POST /v1/local/rates.",
+          "type": "string",
+          "maxLength": 2048,
+          "minLength": 1
+        },
+        "merchant_reference": {
+          "title": "Merchant reference",
+          "description": "The merchant's own order ID. Echoed back on every response.",
+          "type": "string",
+          "default": "",
+          "maxLength": 100
+        },
+        "pickup_address": {
+          "title": "Pickup address",
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "pickup_city": {
+          "title": "Pickup city",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "pickup_contact_name": {
+          "title": "Pickup contact name",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "pickup_contact_phone": {
+          "title": "Pickup contact phone",
+          "type": "string",
+          "maxLength": 17,
+          "minLength": 1
+        },
+        "dropoff_address": {
+          "title": "Dropoff address",
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "dropoff_city": {
+          "title": "Dropoff city",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "dropoff_contact_name": {
+          "title": "Dropoff contact name",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "dropoff_contact_phone": {
+          "title": "Dropoff contact phone",
+          "type": "string",
+          "maxLength": 17,
+          "minLength": 1
+        },
+        "package_type": {
+          "title": "Package type",
+          "type": "string",
+          "enum": [
+            "document",
+            "small",
+            "medium",
+            "large",
+            "custom"
+          ],
+          "default": "small"
+        },
+        "package_description": {
+          "title": "Package description",
+          "type": "string",
+          "default": "",
+          "maxLength": 500
+        },
+        "is_fragile": {
+          "title": "Is fragile",
+          "type": "boolean",
+          "default": false
+        },
+        "special_instructions": {
+          "title": "Special instructions",
+          "type": "string",
+          "default": "",
+          "maxLength": 500
+        }
+      }
+    },
+    "MerchantPortalLocalShipmentResponse": {
+      "required": [
+        "tracking_id",
+        "merchant_reference",
+        "status",
+        "total_fee",
+        "commission",
+        "commission_rate",
+        "total_debited",
+        "currency",
+        "pickup_zone",
+        "dropoff_zone",
+        "vehicle_type",
+        "pickup_address",
+        "dropoff_address",
+        "package_type",
+        "is_fragile",
+        "balance_after",
+        "created_at"
+      ],
+      "type": "object",
+      "properties": {
+        "tracking_id": {
+          "title": "Tracking id",
+          "type": "string",
+          "minLength": 1
+        },
+        "merchant_reference": {
+          "title": "Merchant reference",
+          "type": "string",
+          "x-nullable": true
+        },
+        "status": {
+          "title": "Status",
+          "type": "string",
+          "minLength": 1
+        },
+        "status_display": {
+          "title": "Status display",
+          "type": "string",
+          "minLength": 1
+        },
+        "total_fee": {
+          "title": "Total fee",
+          "type": "string",
+          "format": "decimal"
+        },
+        "commission": {
+          "title": "Commission",
+          "type": "string",
+          "format": "decimal"
+        },
+        "commission_rate": {
+          "title": "Commission rate",
+          "type": "string",
+          "minLength": 1
+        },
+        "total_debited": {
+          "title": "Total debited",
+          "type": "string",
+          "format": "decimal"
+        },
+        "currency": {
+          "title": "Currency",
+          "type": "string",
+          "minLength": 1
+        },
+        "pickup_zone": {
+          "title": "Pickup zone",
+          "type": "string",
+          "minLength": 1
+        },
+        "dropoff_zone": {
+          "title": "Dropoff zone",
+          "type": "string",
+          "minLength": 1
+        },
+        "vehicle_type": {
+          "title": "Vehicle type",
+          "type": "string",
+          "minLength": 1
+        },
+        "pickup_address": {
+          "title": "Pickup address",
+          "type": "string",
+          "minLength": 1
+        },
+        "dropoff_address": {
+          "title": "Dropoff address",
+          "type": "string",
+          "minLength": 1
+        },
+        "package_type": {
+          "title": "Package type",
+          "type": "string",
+          "minLength": 1
+        },
+        "is_fragile": {
+          "title": "Is fragile",
+          "type": "boolean"
+        },
+        "balance_after": {
+          "title": "Balance after",
+          "description": "Merchant's balance after this operation.",
+          "type": "string",
+          "format": "decimal"
+        },
+        "created_at": {
+          "title": "Created at",
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "MerchantPortalRateRequest": {
+      "required": [
+        "origin_state",
+        "destination_state",
+        "weight_kg"
+      ],
+      "type": "object",
+      "properties": {
+        "origin_state": {
+          "title": "Origin state",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "destination_state": {
+          "title": "Destination state",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "weight_kg": {
+          "title": "Weight kg",
+          "type": "string",
+          "format": "decimal"
+        },
+        "is_fragile": {
+          "title": "Is fragile",
+          "type": "boolean",
+          "default": false
+        },
+        "declared_value": {
+          "title": "Declared value",
+          "type": "string",
+          "format": "decimal",
+          "x-nullable": true
+        }
+      }
+    },
+    "MerchantPortalRateResponse": {
+      "required": [
+        "quote_id",
+        "origin_state",
+        "destination_state",
+        "weight_kg",
+        "is_fragile",
+        "total_fee",
+        "currency",
+        "eta_days",
+        "issued_at",
+        "expires_at"
+      ],
+      "type": "object",
+      "properties": {
+        "quote_id": {
+          "title": "Quote id",
+          "description": "Signed quote identifier. Pass this to POST /v1/shipments.",
+          "type": "string",
+          "minLength": 1
+        },
+        "origin_state": {
+          "title": "Origin state",
+          "type": "string",
+          "minLength": 1
+        },
+        "destination_state": {
+          "title": "Destination state",
+          "type": "string",
+          "minLength": 1
+        },
+        "weight_kg": {
+          "title": "Weight kg",
+          "type": "number"
+        },
+        "is_fragile": {
+          "title": "Is fragile",
+          "type": "boolean"
+        },
+        "total_fee": {
+          "title": "Total fee",
+          "type": "string",
+          "format": "decimal"
+        },
+        "currency": {
+          "title": "Currency",
+          "description": "ISO 4217 code. Always NGN.",
+          "type": "string",
+          "minLength": 1
+        },
+        "eta_days": {
+          "title": "Eta days",
+          "type": "integer"
+        },
+        "issued_at": {
+          "title": "Issued at",
+          "description": "Unix epoch seconds when the quote was issued.",
+          "type": "integer"
+        },
+        "expires_at": {
+          "title": "Expires at",
+          "description": "Unix epoch seconds when the quote expires. Quote TTL is 300 seconds.",
+          "type": "integer"
+        }
+      }
+    },
+    "MerchantPortalShipmentCreate": {
+      "required": [
+        "quote_id",
+        "origin_state",
+        "destination_state",
+        "weight_kg",
+        "pickup_address",
+        "pickup_city",
+        "pickup_contact_name",
+        "pickup_contact_phone",
+        "dropoff_address",
+        "dropoff_city",
+        "dropoff_contact_name",
+        "dropoff_contact_phone"
+      ],
+      "type": "object",
+      "properties": {
+        "quote_id": {
+          "title": "Quote id",
+          "description": "Signed quote_id returned by POST /v1/rates.",
+          "type": "string",
+          "maxLength": 2048,
+          "minLength": 1
+        },
+        "merchant_reference": {
+          "title": "Merchant reference",
+          "description": "The merchant's own order ID. Echoed back on every response and every event so the merchant can reconcile without a secondary lookup. Free-form; not unique-enforced.",
+          "type": "string",
+          "default": "",
+          "maxLength": 100
+        },
+        "origin_state": {
+          "title": "Origin state",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "destination_state": {
+          "title": "Destination state",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "weight_kg": {
+          "title": "Weight kg",
+          "type": "string",
+          "format": "decimal"
+        },
+        "is_fragile": {
+          "title": "Is fragile",
+          "type": "boolean",
+          "default": false
+        },
+        "package_type": {
+          "title": "Package type",
+          "type": "string",
+          "enum": [
+            "document",
+            "small",
+            "medium",
+            "large",
+            "custom"
+          ],
+          "default": "small"
+        },
+        "package_description": {
+          "title": "Package description",
+          "type": "string",
+          "default": "",
+          "maxLength": 500
+        },
+        "declared_value": {
+          "title": "Declared value",
+          "type": "string",
+          "format": "decimal",
+          "x-nullable": true
+        },
+        "pickup_address": {
+          "title": "Pickup address",
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "pickup_city": {
+          "title": "Pickup city",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "pickup_contact_name": {
+          "title": "Pickup contact name",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "pickup_contact_phone": {
+          "title": "Pickup contact phone",
+          "type": "string",
+          "maxLength": 17,
+          "minLength": 1
+        },
+        "dropoff_address": {
+          "title": "Dropoff address",
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "dropoff_city": {
+          "title": "Dropoff city",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "dropoff_contact_name": {
+          "title": "Dropoff contact name",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "dropoff_contact_phone": {
+          "title": "Dropoff contact phone",
+          "type": "string",
+          "maxLength": 17,
+          "minLength": 1
+        },
+        "special_instructions": {
+          "title": "Special instructions",
+          "type": "string",
+          "default": "",
+          "maxLength": 500
+        }
+      }
+    },
+    "MerchantPortalShipmentResponse": {
+      "required": [
+        "tracking_id",
+        "merchant_reference",
+        "status",
+        "total_fee",
+        "currency",
+        "origin_state",
+        "destination_state",
+        "weight_kg",
+        "is_fragile",
+        "created_at"
+      ],
+      "type": "object",
+      "properties": {
+        "tracking_id": {
+          "title": "Tracking id",
+          "type": "string",
+          "minLength": 1
+        },
+        "merchant_reference": {
+          "title": "Merchant reference",
+          "type": "string",
+          "x-nullable": true
+        },
+        "status": {
+          "title": "Status",
+          "type": "string",
+          "minLength": 1
+        },
+        "status_display": {
+          "title": "Status display",
+          "type": "string",
+          "minLength": 1
+        },
+        "total_fee": {
+          "title": "Total fee",
+          "type": "string",
+          "format": "decimal"
+        },
+        "currency": {
+          "title": "Currency",
+          "type": "string",
+          "minLength": 1
+        },
+        "origin_state": {
+          "title": "Origin state",
+          "type": "string",
+          "minLength": 1
+        },
+        "destination_state": {
+          "title": "Destination state",
+          "type": "string",
+          "minLength": 1
+        },
+        "weight_kg": {
+          "title": "Weight kg",
+          "type": "number"
+        },
+        "is_fragile": {
+          "title": "Is fragile",
+          "type": "boolean"
+        },
+        "batch_id": {
+          "title": "Batch id",
+          "description": "Bulk batch ID. Null for single shipments.",
+          "type": "string",
+          "x-nullable": true
+        },
+        "is_bulk_order": {
+          "title": "Is bulk order",
+          "description": "True for bulk-batch packages.",
+          "type": "boolean",
+          "default": false
+        },
+        "service_type": {
+          "title": "Service type",
+          "description": "One of: interstate_single, interstate_bulk, local. Classifies the shipment for merchant-portal display.",
+          "type": "string",
+          "minLength": 1
+        },
+        "environment": {
+          "title": "Environment",
+          "description": "One of: test, live. Matches the API key environment that created the shipment.",
+          "type": "string",
+          "minLength": 1
+        },
+        "balance_after": {
+          "title": "Balance after",
+          "description": "Merchant's balance after this operation. Only present on create.",
+          "type": "string",
+          "format": "decimal"
+        },
+        "created_at": {
+          "title": "Created at",
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "title": "Updated at",
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "MerchantPortalShipmentEvent": {
+      "required": [
+        "event_id",
+        "event_type",
+        "tracking_id",
+        "merchant_reference",
+        "status",
+        "occurred_at",
+        "cursor"
+      ],
+      "type": "object",
+      "properties": {
+        "event_id": {
+          "title": "Event id",
+          "description": "Stable opaque identifier. Deduplicate on this value.",
+          "type": "string",
+          "minLength": 1
+        },
+        "event_type": {
+          "title": "Event type",
+          "description": "One of the EventType values, e.g. 'shipment.delivered'.",
+          "type": "string",
+          "minLength": 1
+        },
+        "tracking_id": {
+          "title": "Tracking id",
+          "type": "string",
+          "minLength": 1
+        },
+        "merchant_reference": {
+          "title": "Merchant reference",
+          "type": "string",
+          "x-nullable": true
+        },
+        "status": {
+          "title": "Status",
+          "description": "Current shipment status at the moment of this event.",
+          "type": "string",
+          "minLength": 1
+        },
+        "occurred_at": {
+          "title": "Occurred at",
+          "type": "string",
+          "format": "date-time"
+        },
+        "cursor": {
+          "title": "Cursor",
+          "description": "Opaque cursor. Pass as `since_cursor` to /v1/shipments/catchup to resume from this event.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "MerchantPortalShipmentCatchup": {
+      "required": [
+        "events",
+        "next_cursor",
+        "has_more"
+      ],
+      "type": "object",
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MerchantPortalShipmentEvent"
+          }
+        },
+        "next_cursor": {
+          "title": "Next cursor",
+          "type": "string",
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "has_more": {
+          "title": "Has more",
+          "type": "boolean"
+        }
+      }
+    },
+    "MerchantPortalShipmentEventList": {
+      "required": [
+        "tracking_id",
+        "events",
+        "count"
+      ],
+      "type": "object",
+      "properties": {
+        "tracking_id": {
+          "title": "Tracking id",
+          "type": "string",
+          "minLength": 1
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MerchantPortalShipmentEvent"
+          }
+        },
+        "count": {
+          "title": "Count",
+          "type": "integer"
+        }
+      }
+    },
+    "MerchantPortalTrackingJourney": {
+      "required": [
+        "origin_state",
+        "destination_state",
+        "origin_city",
+        "destination_city",
+        "route_label",
+        "progress_percent",
+        "eta_days",
+        "eta_label"
+      ],
+      "type": "object",
+      "properties": {
+        "origin_state": {
+          "title": "Origin state",
+          "type": "string",
+          "minLength": 1
+        },
+        "destination_state": {
+          "title": "Destination state",
+          "type": "string",
+          "minLength": 1
+        },
+        "origin_city": {
+          "title": "Origin city",
+          "type": "string"
+        },
+        "destination_city": {
+          "title": "Destination city",
+          "type": "string"
+        },
+        "route_label": {
+          "title": "Route label",
+          "description": "Pre-formatted 'Lagos → Abuja' for direct display.",
+          "type": "string",
+          "minLength": 1
+        },
+        "progress_percent": {
+          "title": "Progress percent",
+          "description": "0 before pickup, 100 on delivery.",
+          "type": "integer",
+          "maximum": 100,
+          "minimum": 0
+        },
+        "eta_days": {
+          "title": "Eta days",
+          "description": "Estimated delivery days from creation. Null if unknown.",
+          "type": "integer",
+          "x-nullable": true
+        },
+        "eta_label": {
+          "title": "Eta label",
+          "description": "Pre-formatted ETA, e.g. 'Arrives in 2 days' or 'Delivered on 25 Sep'. Empty when not applicable.",
+          "type": "string"
+        }
+      }
+    },
+    "MerchantPortalTrackingEvent": {
+      "required": [
+        "status",
+        "title",
+        "detail",
+        "icon",
+        "occurred_at"
+      ],
+      "type": "object",
+      "properties": {
+        "status": {
+          "title": "Status",
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "title": "Title",
+          "description": "Short human-readable title, e.g. 'Departed Lagos'.",
+          "type": "string",
+          "minLength": 1
+        },
+        "detail": {
+          "title": "Detail",
+          "description": "Optional second line of context. Empty when nothing applies.",
+          "type": "string"
+        },
+        "icon": {
+          "title": "Icon",
+          "description": "Stable key the frontend maps to a visual.",
+          "type": "string",
+          "enum": [
+            "pickup",
+            "transit",
+            "hub",
+            "delivery",
+            "delivered",
+            "failed"
+          ]
+        },
+        "occurred_at": {
+          "title": "Occurred at",
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "MerchantPortalTrackingResponse": {
+      "required": [
+        "tracking_id",
+        "status",
+        "status_display",
+        "headline",
+        "is_delivered",
+        "is_failed",
+        "origin_state",
+        "destination_state",
+        "created_at",
+        "delivered_at",
+        "journey",
+        "events"
+      ],
+      "type": "object",
+      "properties": {
+        "tracking_id": {
+          "title": "Tracking id",
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "title": "Status",
+          "type": "string",
+          "minLength": 1
+        },
+        "status_display": {
+          "title": "Status display",
+          "type": "string",
+          "minLength": 1
+        },
+        "headline": {
+          "title": "Headline",
+          "description": "One-line summary the page can render as the main heading.",
+          "type": "string",
+          "minLength": 1
+        },
+        "is_delivered": {
+          "title": "Is delivered",
+          "type": "boolean"
+        },
+        "is_failed": {
+          "title": "Is failed",
+          "type": "boolean"
+        },
+        "origin_state": {
+          "title": "Origin state",
+          "type": "string",
+          "minLength": 1
+        },
+        "destination_state": {
+          "title": "Destination state",
+          "type": "string",
+          "minLength": 1
+        },
+        "created_at": {
+          "title": "Created at",
+          "type": "string",
+          "format": "date-time"
+        },
+        "delivered_at": {
+          "title": "Delivered at",
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "journey": {
+          "$ref": "#/definitions/MerchantPortalTrackingJourney"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MerchantPortalTrackingEvent"
+          }
+        }
+      }
+    }
+  }
+}

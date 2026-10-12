@@ -1,0 +1,70 @@
+---
+id: interstate-bulk-shipments-create
+title: "Create a bulk interstate shipment"
+description: "Create a batch of interstate shipments from a signed bulk quote_id. Requires an Idempotency-Key header. Debits the merchant's prepaid balance once for the batch total plus commission."
+sidebar_label: "Create a bulk interstate shipment"
+hide_title: true
+hide_table_of_contents: true
+api: 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
+sidebar_class_name: "post api-method"
+info_path: docs/api/sprint-connect-api
+custom_edit_url: null
+proxy: https://api.sprintafrica.com.ng
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create a bulk interstate shipment"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/interstate/bulk/shipments"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create a batch of interstate shipments from a signed bulk quote_id. Requires an Idempotency-Key header. Debits the merchant's prepaid balance once for the batch total plus commission.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+>
+  <Translate id="theme.openapi.request.title">Request</Translate>
+</Heading>
+
+<ParamsDetails
+  {...require("./interstate-bulk-shipments-create.ParamsDetails.json")}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  {...require("./interstate-bulk-shipments-create.RequestSchema.json")}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  {...require("./interstate-bulk-shipments-create.StatusCodes.json")}
+>
+  
+</StatusCodes>
+
+
+      

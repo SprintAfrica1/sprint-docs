@@ -1,0 +1,29 @@
+/* src/components/HomepageFeatures/styles.module.css */
+
+.features {
+  display: flex;
+  align-items: center;
+  padding: 4rem 0;
+  width: 100%;
+}
+
+.featureEmoji {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.featureTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.featureDescription {
+  font-size: 0.92rem;
+  opacity: 0.75;
+  line-height: 1.6;
+  max-width: 22rem;
+  margin: 0 auto;
+}

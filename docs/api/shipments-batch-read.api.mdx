@@ -1,0 +1,70 @@
+---
+id: shipments-batch-read
+title: "Get a bulk batch"
+description: "Return every shipment in a bulk batch, identified by batch_id. Scoped to the authenticated merchant. Batches created via bulk endpoints share a single batch_id; this endpoint returns all of them in one response without pagination."
+sidebar_label: "Get a bulk batch"
+hide_title: true
+hide_table_of_contents: true
+api: eJzlVU2PGzcM/SsETy0g2Jsip+mlm6AI0s9gnSKHhbGgZ2gPsTOSVuK4dY357wU1HsfObvMHcrItPYrk43v0EUPkRCrBv2+wwtxK7NlrftiQ1u1DYmrQYcO5ThINhhXesQ7JA+85HWCOAPFAsBm6RyihDqRhr7IVbmBzmA4fpFnAqg6RG9AA2jLQoK3halJuoOdUt+R1AW8MzxnqxOVmL6fX2TcxiNcMuaXEQJDF7zo+Z/gRtJV8xkEq5WagroOwtaS9FRs8Q+Icg88Mf4u2YVCItBNf6Figw/k6Y3XEH25u7OOailIl1MGrkbbA0eHrm1fPcb9LtiohJBC/p04auP3wHh75cIp5/Tzmj3AmN8M2DL6BbUhTc2c2cRwdKu0yVve4muG4dhgpUc/Kya6O6KlnrHAORIdiSSJpWzp9GiRxg5WmgR3muuWerCY9RIvLmsTvcBzXDnvWNphadqzopicqXJ6LXZYky+Oca0SHmdN+LmVIHVbYqsZcLZcUZZFjEq+0TVLTog79wu+W+1doyTLXQxI9lMg3TIkTVvfry6uVFTsNaQac66Yov/IB3dz/7aBtSPJvmfFMQsvUcHqm818+fYQrPExAGMosTb1TPih08TQM8dtQChDtLOOq9AZvg/dcq439WaJriCsvmzxs3LMjsmn3BLydiIK3xRvQhZq6C62YmMXDb7QLGcg3IN5koIY9oxzYzDkrJDt/GoJydgVupv/sa94XacPdBM9QTHflWkto5p/IOAkbJOeBG9im0JeO5k4ghqTUmcGUU5//3K447aXmC1G8JIgCXqJDsxvVaiSfpnrFC6yGaCnQfaG0lx6d33LIPYmh8xT90wtos2onNfvMF8k/pBCTsFI6GMBkPo3VFOwwhqw9+YuAd6xXq/JLPRzxtFC+pV178qvyP7qMHYk37sr8jqcNc//53wkdzsxV5422dtiGrAY8HjeU+a/UjaMdPw2cbIGsHe4pCW3MmPdHbCTb9warLXWZvzKG7+5OC/J7+L9a54XjbdvsqRvsFzp85MPl3h3X48UGfffzRxzH/wA+/KUc
+sidebar_class_name: "get api-method"
+info_path: docs/api/sprint-connect-api
+custom_edit_url: null
+proxy: https://api.sprintafrica.com.ng
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Get a bulk batch"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/shipments/batch/{batch_id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Return every shipment in a bulk batch, identified by batch_id. Scoped to the authenticated merchant. Batches created via bulk endpoints share a single batch_id; this endpoint returns all of them in one response without pagination.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+>
+  <Translate id="theme.openapi.request.title">Request</Translate>
+</Heading>
+
+<ParamsDetails
+  {...require("./shipments-batch-read.ParamsDetails.json")}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  {...require("./shipments-batch-read.RequestSchema.json")}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  {...require("./shipments-batch-read.StatusCodes.json")}
+>
+  
+</StatusCodes>
+
+
+      
