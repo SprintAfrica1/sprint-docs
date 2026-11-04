@@ -28,7 +28,7 @@ it with your own sandbox key.
 Send a request with a malformed key. The API returns 401 and a body that
 identifies the problem.
 
-```
+```bash
 curl -X POST https://api.sprintafrica.com.ng/v1/rates \
   -H "Authorization: Bearer sk_test_this_is_not_a_real_key" \
   -H "Content-Type: application/json" \
@@ -41,7 +41,7 @@ curl -X POST https://api.sprintafrica.com.ng/v1/rates \
 
 Response:
 
-```
+```json
 {
   "error": {
     "type": "authentication_error",
@@ -60,7 +60,7 @@ does not retry, and does not log the malformed key.
 
 Send a quote request with a state the API does not recognize.
 
-```
+```bash
 curl -X POST https://api.sprintafrica.com.ng/v1/rates \
   -H "Authorization: Bearer sk_test_YOUR_KEY_HERE" \
   -H "Content-Type: application/json" \
@@ -73,7 +73,7 @@ curl -X POST https://api.sprintafrica.com.ng/v1/rates \
 
 Response:
 
-```
+```json
 {
   "error": {
     "type": "invalid_request_error",
@@ -92,7 +92,7 @@ error UI so the fix is obvious.
 
 Interstate parcels cannot have the same origin and destination state.
 
-```
+```bash
 curl -X POST https://api.sprintafrica.com.ng/v1/rates \
   -H "Authorization: Bearer sk_test_YOUR_KEY_HERE" \
   -H "Content-Type: application/json" \
@@ -105,7 +105,7 @@ curl -X POST https://api.sprintafrica.com.ng/v1/rates \
 
 Response:
 
-```
+```json
 {
   "error": {
     "type": "invalid_request_error",
@@ -122,7 +122,7 @@ For Lagos to Lagos deliveries, use `POST /v1/local/rates` instead.
 
 Request a quote, wait more than five minutes, then try to use it.
 
-```
+```bash
 # Step 1: request a quote
 curl -X POST https://api.sprintafrica.com.ng/v1/local/rates \
   -H "Authorization: Bearer sk_test_YOUR_KEY_HERE" \
@@ -147,7 +147,7 @@ curl -X POST https://api.sprintafrica.com.ng/v1/local/shipments \
 
 Response:
 
-```
+```json
 {
   "error": {
     "type": "invalid_request_error",
@@ -167,7 +167,7 @@ same quote.
 
 Response:
 
-```
+```json
 {
   "error": {
     "type": "invalid_request_error",
@@ -185,7 +185,7 @@ mismatch.
 
 Send a shipment that costs more than the merchant balance.
 
-```
+```bash
 curl -X POST https://api.sprintafrica.com.ng/v1/rates \
   -H "Authorization: Bearer sk_test_YOUR_KEY_HERE" \
   -H "Content-Type: application/json" \
@@ -200,7 +200,7 @@ curl -X POST https://api.sprintafrica.com.ng/v1/rates \
 
 Then create with the resulting quote. Response:
 
-```
+```json
 {
   "error": {
     "type": "invalid_request_error",
@@ -217,7 +217,7 @@ your client surfaces this to the merchant and does not retry.
 
 Send two different requests with the same `Idempotency-Key`.
 
-```
+```bash
 # First request
 curl -X POST https://api.sprintafrica.com.ng/v1/local/shipments \
   -H "Authorization: Bearer sk_test_YOUR_KEY_HERE" \
@@ -235,7 +235,7 @@ curl -X POST https://api.sprintafrica.com.ng/v1/local/shipments \
 
 Response on the second call:
 
-```
+```json
 {
   "error": {
     "type": "invalid_request_error",
@@ -253,7 +253,7 @@ create, so this never fires in normal operation.
 If a merchant is not enabled for the parcel service, every endpoint
 returns:
 
-```
+```json
 {
   "error": {
     "type": "permission_error",

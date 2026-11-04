@@ -5,7 +5,6 @@ import type * as OpenApiPlugin from 'docusaurus-plugin-openapi-docs';
 
 const year = new Date().getFullYear();
 
-const GITHUB_REPO = 'https://github.com/SprintAfrica1/sprint-docs';
 const SITE_URL = 'https://docs.sprintafrica.com.ng';
 const SOCIAL_IMAGE = `${SITE_URL}/img/sprint-connect-social.png`;
 
@@ -21,7 +20,11 @@ const config: Config = {
   projectName: 'sprint-docs',
 
   onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
 
   i18n: {
     defaultLocale: 'en',
@@ -34,7 +37,6 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          editUrl: `${GITHUB_REPO}/tree/main/`,
           docItemComponent: '@theme/ApiItem',
         },
         blog: false,
@@ -184,12 +186,6 @@ const config: Config = {
           label: 'Merchant Portal',
         },
         {
-          href: GITHUB_REPO,
-          position: 'right',
-          className: 'header-github-link',
-          'aria-label': 'Sprint Connect API documentation GitHub repository',
-        },
-        {
           href: 'https://sprintafrica.com.ng/merchant/signup',
           position: 'right',
           label: 'Get Started',
@@ -227,10 +223,6 @@ const config: Config = {
             { label: 'Authentication', to: '/docs/authentication' },
             { label: 'Error handling', to: '/docs/guides/errors' },
             { label: 'Sandbox', to: '/docs/sandbox/get-a-sandbox-key' },
-            {
-              label: 'GitHub Repository',
-              href: GITHUB_REPO,
-            },
           ],
         },
         {

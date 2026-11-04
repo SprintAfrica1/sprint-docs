@@ -37,7 +37,7 @@ saw, so nothing can change between viewing and booking.
 
 For a Lagos same city delivery, use the local rate endpoint:
 
-```
+```bash
 curl -X POST https://api.sprintafrica.com.ng/v1/local/rates \
   -H "Authorization: Bearer sk_test_YOUR_KEY_HERE" \
   -H "Content-Type: application/json" \
@@ -51,7 +51,7 @@ curl -X POST https://api.sprintafrica.com.ng/v1/local/rates \
 
 The response looks like this:
 
-```
+```json
 {
   "quote_id": "qtl_eyJkcm9w...",
   "pickup_zone": "Z4",
@@ -77,7 +77,7 @@ Paste the `quote_id` from step one into the request below. Replace
 `sk_test_YOUR_KEY_HERE` with your sandbox key and
 `PASTE_YOUR_QUOTE_ID_HERE` with the full quote ID.
 
-```
+```bash
 curl -X POST https://api.sprintafrica.com.ng/v1/local/shipments \
   -H "Authorization: Bearer sk_test_YOUR_KEY_HERE" \
   -H "Content-Type: application/json" \
@@ -102,7 +102,7 @@ curl -X POST https://api.sprintafrica.com.ng/v1/local/shipments \
 
 The response:
 
-```
+```json
 {
   "tracking_id": "SP-3959261C",
   "merchant_reference": "sandbox-test-001",

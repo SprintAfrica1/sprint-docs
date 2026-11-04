@@ -21,7 +21,7 @@ Replace `sk_test_YOUR_KEY_HERE` in every example with your own key.
 
 Use the local endpoint for deliveries inside Lagos.
 
-```
+```bash
 curl -X POST https://api.sprintafrica.com.ng/v1/local/rates \
   -H "Authorization: Bearer sk_test_YOUR_KEY_HERE" \
   -H "Content-Type: application/json" \
@@ -35,7 +35,7 @@ curl -X POST https://api.sprintafrica.com.ng/v1/local/rates \
 
 Response:
 
-```
+```json
 {
   "quote_id": "qtl_eyJkcm9w...",
   "pickup_zone": "Z4",
@@ -56,7 +56,7 @@ Response:
 
 Use the standard endpoint for parcels that travel between states.
 
-```
+```bash
 curl -X POST https://api.sprintafrica.com.ng/v1/rates \
   -H "Authorization: Bearer sk_test_YOUR_KEY_HERE" \
   -H "Content-Type: application/json" \

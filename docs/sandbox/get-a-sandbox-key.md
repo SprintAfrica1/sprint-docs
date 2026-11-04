@@ -33,7 +33,7 @@ The full key is shown once. If you lose it, revoke it and create a new one.
 Send a request to the local rate endpoint. A successful response confirms
 the key is valid and your merchant account is enabled.
 
-```
+```bash
 curl -X POST https://api.sprintafrica.com.ng/v1/local/rates \
   -H "Authorization: Bearer sk_test_YOUR_KEY_HERE" \
   -H "Content-Type: application/json" \
