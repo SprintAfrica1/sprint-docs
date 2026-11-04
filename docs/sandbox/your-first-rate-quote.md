@@ -1,44 +1,95 @@
 ﻿---
+id: your-first-rate-quote
 title: Your First Rate Quote
-description: Request a delivery quote using Sprint Connect.
+sidebar_label: Your first rate quote
+slug: /sandbox/your-first-rate-quote
 ---
 
 # Your First Rate Quote
 
-A rate quote lets your application retrieve shipping pricing before creating a shipment.
+A rate quote tells you what a delivery will cost and locks in that price
+for five minutes. Every shipment starts with one.
 
-## 1. Prepare the request
+## Before you begin
 
-Use the `POST /v1/rates` endpoint with valid sandbox credentials.
+You need a sandbox key. If you do not have one, see
+[Get a Sandbox Key](/docs/sandbox/get-a-sandbox-key).
 
-The request body must include the required delivery and package details defined in the published schema. Do not assume that example fields from another delivery type are interchangeable.
+Replace `sk_test_YOUR_KEY_HERE` in every example with your own key.
 
-See [Create a Rate Quote](/docs/api/rates-create) for the authoritative request fields and response structure.
+## Local quote
 
-## 2. Submit the quote request
+Use the local endpoint for deliveries inside Lagos.
 
-Send the request from your backend using the required authentication header.
+```
+curl -X POST https://api.sprintafrica.com.ng/v1/local/rates \
+  -H "Authorization: Bearer sk_test_YOUR_KEY_HERE" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "pickup_address": "14 Awolowo Road, Ikoyi",
+    "dropoff_address": "22 Broad Street, Lagos Island",
+    "package_type": "small",
+    "is_fragile": false
+  }'
+```
 
-Example using PowerShell is possible, but the exact request body depends on the API schema and the route you are quoting. Start with the generated API reference rather than sending an invented payload.
+Response:
 
-## 3. Handle the response
+```
+{
+  "quote_id": "qtl_eyJkcm9w...",
+  "pickup_zone": "Z4",
+  "dropoff_zone": "Z4",
+  "vehicle_type": "bike",
+  "pickup_address": "14 Awolowo Road, Ikoyi",
+  "dropoff_address": "22 Broad Street, Lagos Island",
+  "package_type": "small",
+  "is_fragile": false,
+  "total_fee": "3571.00",
+  "currency": "NGN",
+  "issued_at": 1791828562,
+  "expires_at": 1791828862
+}
+```
 
-When the request succeeds:
+## Interstate quote
 
-1. Read the returned pricing information.
-2. Display the quote to the customer as appropriate.
-3. Retain any quote or rate reference required by the shipment-creation workflow.
-4. Handle the response according to the documented schema.
+Use the standard endpoint for parcels that travel between states.
 
-A quote is not a booked shipment. Do not show an order as dispatched merely because the rate request succeeded.
+```
+curl -X POST https://api.sprintafrica.com.ng/v1/rates \
+  -H "Authorization: Bearer sk_test_YOUR_KEY_HERE" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "origin_state": "Lagos",
+    "destination_state": "Rivers",
+    "weight_kg": 2.0
+  }'
+```
 
-## 4. Handle errors
+Origin and destination must be different states. For same state deliveries
+use the local endpoint.
 
-If the request fails, inspect the HTTP status and response body. Correct invalid input or authentication before trying again.
+## Read the response
 
-For general guidance, see [Handle API Errors](/docs/guides/errors).
+| Field | Meaning |
+|---|---|
+| `quote_id` | Signed token. Pass it unchanged when you create the shipment. |
+| `total_fee` | Delivery price as a string, in the currency shown. |
+| `currency` | Always `NGN`. |
+| `vehicle_type` | Vehicle the zone and package type resolve to. |
+| `issued_at` | Unix timestamp when the quote was created. |
+| `expires_at` | Unix timestamp when the quote stops being valid. |
+
+The quote is valid for five minutes. After `expires_at` the API rejects it
+with `quote_expired`. Request a new quote instead of trying to reuse it.
+
+## Money values are strings
+
+Amounts such as `3571.00` are returned as strings to avoid floating point
+rounding. Parse them with a decimal type, not a float.
 
 ## Next step
 
-After confirming the quote and collecting the required shipment information, continue to [Your First Shipment](/docs/sandbox/your-first-shipment).
-
+Continue with [Your First Shipment](/docs/sandbox/your-first-shipment). For
+the full lifecycle of a quote, see [Quote Lifecycle](/docs/quote-lifecycle).

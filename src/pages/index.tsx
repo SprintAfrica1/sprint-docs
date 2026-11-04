@@ -9,6 +9,7 @@
 // Destinations are collected in ROUTES so they can be changed in one place.
 
 import React, { useEffect, useRef, useState } from 'react';
+import Head from '@docusaurus/Head';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import CodeTabs, { type CodeTab } from '@site/src/components/CodeTabs';
@@ -42,6 +43,13 @@ const ROUTES = {
   catchup: '/docs/api/shipments-catchup-list',
   trackingRead: '/docs/api/tracking-read',
 } as const;
+
+/* ------------------------------------------------------------------ */
+/* Site constants                                                      */
+/* ------------------------------------------------------------------ */
+
+const SITE_URL = 'https://docs.sprintafrica.com.ng';
+const SOCIAL_IMAGE = `${SITE_URL}/img/sprint-connect-social.png`;
 
 /* ------------------------------------------------------------------ */
 /* Content                                                             */
@@ -805,10 +813,45 @@ function FinalCta() {
 export default function Home() {
   return (
     <Layout
-      title="Sprint Connect API"
-      description="The merchant-facing API for Sprint Africa. Ship across Nigeria with one key.">
-      <div className={styles.page}>
+      title="Sprint Connect API | Logistics Infrastructure for Builders"
+      description="Integrate nationwide delivery across Nigeria with the Sprint Connect API. Generate rate quotes, create shipments, track parcels, and manage bulk deliveries through one developer-friendly API."
+    >
+      <Head>
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Sprint Connect by Sprint Africa" />
+        <meta property="og:url" content={SITE_URL} />
+        <meta
+          property="og:title"
+          content="Sprint Connect API | Logistics Infrastructure for Builders"
+        />
+        <meta
+          property="og:description"
+          content="One API for delivery quotes, shipment creation, parcel tracking, and bulk logistics across Nigeria."
+        />
+        <meta property="og:image" content={SOCIAL_IMAGE} />
+        <meta property="og:image:secure_url" content={SOCIAL_IMAGE} />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Sprint Connect API | Sprint Africa" />
+        <meta
+          name="twitter:description"
+          content="Integrate delivery quotes, shipment creation, and parcel tracking across Nigeria with one developer-friendly API."
+        />
+        <meta name="twitter:image" content={SOCIAL_IMAGE} />
+        <meta
+          name="twitter:image:alt"
+          content="Sprint Connect API by Sprint Africa. One API to simplify logistics integration across Nigeria."
+        />
+      </Head>
+
+      <div className={`${styles.page} ${styles.homeLayout}`}>
         <Hero />
+
         <main>
           <Playground />
           <Features />

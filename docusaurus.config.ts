@@ -1,5 +1,4 @@
-﻿
-import { themes as prismThemes } from 'prism-react-renderer';
+﻿import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import type * as OpenApiPlugin from 'docusaurus-plugin-openapi-docs';
@@ -7,13 +6,15 @@ import type * as OpenApiPlugin from 'docusaurus-plugin-openapi-docs';
 const year = new Date().getFullYear();
 
 const GITHUB_REPO = 'https://github.com/SprintAfrica1/sprint-docs';
+const SITE_URL = 'https://docs.sprintafrica.com.ng';
+const SOCIAL_IMAGE = `${SITE_URL}/img/sprint-connect-social.png`;
 
 const config: Config = {
   title: 'Sprint Connect API',
   tagline: 'Move anything across Nigeria with one API.',
   favicon: 'img/favicon.ico',
 
-  url: 'https://docs.sprintafrica.com.ng',
+  url: SITE_URL,
   baseUrl: '/',
 
   organizationName: 'SprintAfrica1',
@@ -58,7 +59,6 @@ const config: Config = {
               groupPathsBy: 'tag',
               categoryLinkSource: 'tag',
             },
-            proxy: 'https://api.sprintafrica.com.ng',
             hideSendButton: false,
             showSchemas: true,
           } satisfies OpenApiPlugin.Options,
@@ -70,7 +70,82 @@ const config: Config = {
   themes: ['docusaurus-theme-openapi-docs'],
 
   themeConfig: {
-    image: 'img/social-card.png',
+    image: 'img/sprint-connect-social.png',
+
+    metadata: [
+      {
+        name: 'description',
+        content:
+          'Integrate nationwide delivery across Nigeria with the Sprint Connect API. Get delivery rate quotes, create shipments, track parcels, and manage bulk deliveries.',
+      },
+      {
+        name: 'robots',
+        content: 'index, follow',
+      },
+      {
+        property: 'og:type',
+        content: 'website',
+      },
+      {
+        property: 'og:site_name',
+        content: 'Sprint Connect by Sprint Africa',
+      },
+      {
+        property: 'og:url',
+        content: SITE_URL,
+      },
+      {
+        property: 'og:title',
+        content: 'Sprint Connect API | Logistics Infrastructure for Builders',
+      },
+      {
+        property: 'og:description',
+        content:
+          'One API for delivery quotes, shipment creation, parcel tracking, and bulk logistics across Nigeria.',
+      },
+      {
+        property: 'og:image',
+        content: SOCIAL_IMAGE,
+      },
+      {
+        property: 'og:image:secure_url',
+        content: SOCIAL_IMAGE,
+      },
+      {
+        property: 'og:image:type',
+        content: 'image/png',
+      },
+      {
+        property: 'og:image:width',
+        content: '1200',
+      },
+      {
+        property: 'og:image:height',
+        content: '630',
+      },
+      {
+        name: 'twitter:card',
+        content: 'summary_large_image',
+      },
+      {
+        name: 'twitter:title',
+        content: 'Sprint Connect API | Sprint Africa',
+      },
+      {
+        name: 'twitter:description',
+        content:
+          'Integrate delivery quotes, shipment creation, and parcel tracking across Nigeria with one developer-friendly API.',
+      },
+      {
+        name: 'twitter:image',
+        content: SOCIAL_IMAGE,
+      },
+      {
+        name: 'twitter:image:alt',
+        content:
+          'Sprint Connect API by Sprint Africa. One API to simplify logistics integration across Nigeria.',
+      },
+    ],
 
     colorMode: {
       defaultMode: 'dark',
@@ -83,7 +158,6 @@ const config: Config = {
       logo: {
         alt: 'Sprint Africa',
         src: 'img/sprint-logo.png',
-        srcDark: 'img/sprint-logo.png',
         height: 36,
       },
       items: [
@@ -128,7 +202,7 @@ const config: Config = {
       style: 'dark',
       logo: {
         alt: 'Sprint Africa',
-        src: 'img/logo-dark.png',
+        src: 'img/sprint-logo.png',
         height: 40,
       },
       links: [

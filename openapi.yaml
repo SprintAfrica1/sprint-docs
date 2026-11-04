@@ -1,10 +1,7 @@
 openapi: 3.0.0
 info:
   title: Sprint Connect API
-  description: Sprint Connect, the API for merchants of Sprint Africa. Create
-    local shipments within Lagos and interstate shipments, request rate quotes,
-    and read shipment events. Requests are authenticated with a bearer API key
-    issued from the merchant portal.
+  description: Sprint Connect, the API for merchants of Sprint Africa. Create local shipments within Lagos and interstate shipments, request rate quotes, and read shipment events. Requests are authenticated with a bearer API key issued from the merchant portal.
   termsOfService: https://sprintafrica.com.ng/terms/
   contact:
     name: Sprint Africa Support
@@ -20,75 +17,88 @@ paths:
     post:
       operationId: interstate_bulk_rates_create
       summary: Request a bulk interstate quote
-      description: Compute per-package prices for one pickup and multiple destinations
-        across states. Returns a signed quote_id and per-package pricing. Pass
-        the quote_id to POST /v1/interstate/bulk/shipments.
+      description: Compute per-package prices for one pickup and multiple destinations across states. Returns a signed quote_id and per-package pricing. Pass the quote_id to POST /v1/interstate/bulk/shipments.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MerchantPortalInterstateBulkRateRequest"
+              $ref: '#/components/schemas/MerchantPortalInterstateBulkRateRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: Bulk interstate quote.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MerchantPortalInterstateBulkRateResponse"
-        "400":
+                $ref: '#/components/schemas/MerchantPortalInterstateBulkRateResponse'
+        '400':
           description: Validation error.
-        "401":
+        '401':
           description: Missing or invalid API key.
-        "403":
+        '403':
           description: Merchant not enabled for parcel service.
-        "404":
+        '404':
           description: Route not found for one or more packages.
-        "429":
+        '429':
           description: Rate limit exceeded.
       tags:
         - Interstate
+      parameters:
+        - name: Content-Type
+          in: header
+          required: false
+          description: Request body media type.
+          schema:
+            type: string
+            default: application/json
+            example: application/json
     parameters: []
   /interstate/bulk/shipments:
     post:
       operationId: interstate_bulk_shipments_create
       summary: Create a bulk interstate shipment
-      description: Create a batch of interstate shipments from a signed bulk quote_id.
-        Requires an Idempotency-Key header. Debits the merchant's prepaid
-        balance once for the batch total plus commission.
+      description: Create a batch of interstate shipments from a signed bulk quote_id. Requires an Idempotency-Key header. Debits the merchant's prepaid balance once for the batch total plus commission.
       parameters:
         - name: Idempotency-Key
           in: header
-          description: Opaque string. Retries with the same key are safe.
-          required: true
+          description: Required for shipment creation. Any unique string, for example a UUID. Use a new value for every shipment. Reuse a value only to retry the exact same request.
+          required: false
           schema:
             type: string
+        - name: Content-Type
+          in: header
+          required: false
+          description: Request body media type.
+          schema:
+            type: string
+            default: application/json
+            example: application/json
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MerchantPortalInterstateBulkShipmentCreate"
+              $ref: '#/components/schemas/MerchantPortalInterstateBulkShipmentCreate'
         required: true
       responses:
-        "200":
+        '200':
           description: Idempotent replay — original response.
-        "201":
+        '201':
           description: Bulk interstate shipment created.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MerchantPortalInterstateBulkShipmentResponse"
-        "400":
+                $ref: '#/components/schemas/MerchantPortalInterstateBulkShipmentResponse'
+        '400':
           description: Validation error.
-        "401":
+        '401':
           description: Missing or invalid API key.
-        "402":
+        '402':
           description: Insufficient balance.
-        "403":
+        '403':
           description: Merchant not enabled.
-        "409":
+        '409':
           description: Idempotency-Key reused with a different body.
-        "429":
+        '429':
           description: Rate limit exceeded.
       tags:
         - Interstate
@@ -97,73 +107,86 @@ paths:
     post:
       operationId: local_bulk_rates_create
       summary: Request a bulk local quote
-      description: Compute zone-based prices for one Lagos pickup and multiple Lagos
-        dropoffs. Returns a signed quote_id and per-package pricing. Pass the
-        quote_id to POST /v1/local/bulk/shipments.
+      description: Compute zone-based prices for one Lagos pickup and multiple Lagos dropoffs. Returns a signed quote_id and per-package pricing. Pass the quote_id to POST /v1/local/bulk/shipments.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MerchantPortalLocalBulkRateRequest"
+              $ref: '#/components/schemas/MerchantPortalLocalBulkRateRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: Bulk local quote.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MerchantPortalLocalBulkRateResponse"
-        "400":
+                $ref: '#/components/schemas/MerchantPortalLocalBulkRateResponse'
+        '400':
           description: Validation error.
-        "401":
+        '401':
           description: Missing or invalid API key.
-        "403":
+        '403':
           description: Merchant not enabled for parcel service.
-        "429":
+        '429':
           description: Rate limit exceeded.
       tags:
         - Local
+      parameters:
+        - name: Content-Type
+          in: header
+          required: false
+          description: Request body media type.
+          schema:
+            type: string
+            default: application/json
+            example: application/json
     parameters: []
   /local/bulk/shipments:
     post:
       operationId: local_bulk_shipments_create
       summary: Create a bulk local shipment
-      description: Create a batch of Lagos same-city shipments from a signed bulk
-        local quote_id. Requires an Idempotency-Key header. Debits the
-        merchant's prepaid balance once for the batch total plus commission.
+      description: Create a batch of Lagos same-city shipments from a signed bulk local quote_id. Requires an Idempotency-Key header. Debits the merchant's prepaid balance once for the batch total plus commission.
       parameters:
         - name: Idempotency-Key
           in: header
-          description: Opaque string. Retries with the same key are safe.
-          required: true
+          description: Required for shipment creation. Any unique string, for example a UUID. Use a new value for every shipment. Reuse a value only to retry the exact same request.
+          required: false
           schema:
             type: string
+        - name: Content-Type
+          in: header
+          required: false
+          description: Request body media type.
+          schema:
+            type: string
+            default: application/json
+            example: application/json
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MerchantPortalLocalBulkShipmentCreate"
+              $ref: '#/components/schemas/MerchantPortalLocalBulkShipmentCreate'
         required: true
       responses:
-        "200":
+        '200':
           description: Idempotent replay — original response.
-        "201":
+        '201':
           description: Bulk local shipment created.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MerchantPortalLocalBulkShipmentResponse"
-        "400":
+                $ref: '#/components/schemas/MerchantPortalLocalBulkShipmentResponse'
+        '400':
           description: Validation error.
-        "401":
+        '401':
           description: Missing or invalid API key.
-        "402":
+        '402':
           description: Insufficient balance.
-        "403":
+        '403':
           description: Merchant not enabled.
-        "409":
+        '409':
           description: Idempotency-Key reused with a different body.
-        "429":
+        '429':
           description: Rate limit exceeded.
       tags:
         - Local
@@ -172,74 +195,86 @@ paths:
     post:
       operationId: local_rates_create
       summary: Request a local quote
-      description: Compute a zone-based price for a Lagos pickup and dropoff pair.
-        Returns a signed quote_id that must be passed to POST
-        /v1/local/shipments. No weight input — the local rate card is zone-based
-        and the vehicle class is derived from package_type.
+      description: Compute a zone-based price for a Lagos pickup and dropoff pair. Returns a signed quote_id that must be passed to POST /v1/local/shipments. No weight input — the local rate card is zone-based and the vehicle class is derived from package_type.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MerchantPortalLocalRateRequest"
+              $ref: '#/components/schemas/MerchantPortalLocalRateRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: Local quote.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MerchantPortalLocalRateResponse"
-        "400":
+                $ref: '#/components/schemas/MerchantPortalLocalRateResponse'
+        '400':
           description: Validation error.
-        "401":
+        '401':
           description: Missing or invalid API key.
-        "403":
+        '403':
           description: Merchant not enabled for parcel service.
-        "429":
+        '429':
           description: Rate limit exceeded.
       tags:
         - Local
+      parameters:
+        - name: Content-Type
+          in: header
+          required: false
+          description: Request body media type.
+          schema:
+            type: string
+            default: application/json
+            example: application/json
     parameters: []
   /local/shipments:
     post:
       operationId: local_shipments_create
       summary: Create a local shipment
-      description: Create a Lagos same-city shipment from a signed local quote_id.
-        Requires an Idempotency-Key header. Debits the merchant's prepaid
-        balance atomically with order creation.
+      description: Create a Lagos same-city shipment from a signed local quote_id. Requires an Idempotency-Key header. Debits the merchant's prepaid balance atomically with order creation.
       parameters:
         - name: Idempotency-Key
           in: header
-          description: Opaque string. Retries with the same key are safe.
-          required: true
+          description: Required for shipment creation. Any unique string, for example a UUID. Use a new value for every shipment. Reuse a value only to retry the exact same request.
+          required: false
           schema:
             type: string
+        - name: Content-Type
+          in: header
+          required: false
+          description: Request body media type.
+          schema:
+            type: string
+            default: application/json
+            example: application/json
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MerchantPortalLocalShipmentCreate"
+              $ref: '#/components/schemas/MerchantPortalLocalShipmentCreate'
         required: true
       responses:
-        "200":
+        '200':
           description: Idempotent replay — original response.
-        "201":
+        '201':
           description: Local shipment created.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MerchantPortalLocalShipmentResponse"
-        "400":
+                $ref: '#/components/schemas/MerchantPortalLocalShipmentResponse'
+        '400':
           description: Validation error.
-        "401":
+        '401':
           description: Missing or invalid API key.
-        "402":
+        '402':
           description: Insufficient balance.
-        "403":
+        '403':
           description: Merchant not enabled.
-        "409":
+        '409':
           description: Idempotency-Key reused with a different body.
-        "429":
+        '429':
           description: Rate limit exceeded.
       tags:
         - Local
@@ -248,42 +283,47 @@ paths:
     post:
       operationId: rates_create
       summary: Get a delivery quote
-      description: Compute a delivery fee for an interstate parcel. Returns a signed
-        quote_id that must be passed to POST /v1/shipments. Quotes expire after
-        300 seconds.
+      description: Compute a delivery fee for an interstate parcel. Returns a signed quote_id that must be passed to POST /v1/shipments. Quotes expire after 300 seconds.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MerchantPortalRateRequest"
+              $ref: '#/components/schemas/MerchantPortalRateRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: Quote computed.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MerchantPortalRateResponse"
-        "400":
+                $ref: '#/components/schemas/MerchantPortalRateResponse'
+        '400':
           description: Validation error.
-        "401":
+        '401':
           description: Missing or invalid API key.
-        "403":
+        '403':
           description: Merchant not enabled for parcel service.
-        "404":
+        '404':
           description: No route available for the state pair.
-        "429":
+        '429':
           description: Rate limit exceeded.
       tags:
         - Rates
+      parameters:
+        - name: Content-Type
+          in: header
+          required: false
+          description: Request body media type.
+          schema:
+            type: string
+            default: application/json
+            example: application/json
     parameters: []
   /shipments:
     get:
       operationId: shipments_list
       summary: List shipments
-      description: "Return a cursor-paginated list of the merchant's shipments. The
-        environment is derived from the API key: a test key sees only test
-        shipments, a live key sees only live shipments."
+      description: 'Return a cursor-paginated list of the merchant''s shipments. The environment is derived from the API key: a test key sees only test shipments, a live key sees only live shipments.'
       parameters:
         - name: cursor
           in: query
@@ -298,73 +338,72 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: Page of shipments.
-        "401":
+        '401':
           description: Missing or invalid API key.
       tags:
         - Shipments
     post:
       operationId: shipments_create
       summary: Create a shipment
-      description: Create an interstate shipment for the merchant using a signed
-        quote_id obtained from POST /v1/rates. The request must include an
-        Idempotency-Key header. Repeating a request with the same key is safe
-        and returns the original result; reusing the key with a different
-        request body returns a conflict. The merchant's prepaid balance is
-        debited atomically with shipment creation. The shipment is assigned to
-        the environment of the authenticating API key.
+      description: Create an interstate shipment for the merchant using a signed quote_id obtained from POST /v1/rates. The request must include an Idempotency-Key header. Repeating a request with the same key is safe and returns the original result; reusing the key with a different request body returns a conflict. The merchant's prepaid balance is debited atomically with shipment creation. The shipment is assigned to the environment of the authenticating API key.
       parameters:
         - name: Idempotency-Key
           in: header
-          description: Opaque string. Retries with the same key are safe.
-          required: true
+          description: Required for shipment creation. Any unique string, for example a UUID. Use a new value for every shipment. Reuse a value only to retry the exact same request.
+          required: false
           schema:
             type: string
+        - name: Content-Type
+          in: header
+          required: false
+          description: Request body media type.
+          schema:
+            type: string
+            default: application/json
+            example: application/json
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MerchantPortalShipmentCreate"
+              $ref: '#/components/schemas/MerchantPortalShipmentCreate'
         required: true
       responses:
-        "200":
+        '200':
           description: Idempotent replay — original response.
-        "201":
+        '201':
           description: Shipment created.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MerchantPortalShipmentResponse"
-        "400":
+                $ref: '#/components/schemas/MerchantPortalShipmentResponse'
+        '400':
           description: Validation error.
-        "401":
+        '401':
           description: Missing or invalid API key.
-        "402":
+        '402':
           description: Insufficient balance.
-        "403":
+        '403':
           description: Merchant not enabled.
-        "409":
+        '409':
           description: Idempotency-Key reused with a different body.
-        "429":
+        '429':
           description: Rate limit exceeded.
       tags:
         - Shipments
     parameters: []
-  "/shipments/batch/{batch_id}":
+  /shipments/batch/{batch_id}:
     get:
       operationId: shipments_batch_read
       summary: Get a bulk batch
-      description: Return every shipment in a bulk batch, identified by batch_id.
-        Scoped to the authenticated merchant. Batches created via bulk endpoints
-        share a single batch_id; this endpoint returns all of them in one
-        response without pagination.
+      description: Return every shipment in a bulk batch, identified by batch_id. Scoped to the authenticated merchant. Batches created via bulk endpoints share a single batch_id; this endpoint returns all of them in one response without pagination.
       responses:
-        "200":
+        '200':
           description: Batch contents.
-        "401":
+        '401':
           description: Missing or invalid API key.
-        "404":
+        '404':
           description: No shipments found for this batch_id.
       tags:
         - Shipments
@@ -378,13 +417,11 @@ paths:
     get:
       operationId: shipments_catchup_list
       summary: Catch up on events
-      description: Retrieve all events that occurred after a cursor. Used to recover
-        after a polling gap.
+      description: Retrieve all events that occurred after a cursor. Used to recover after a polling gap.
       parameters:
         - name: since_cursor
           in: query
-          description: Opaque cursor from a previous response. Omit to start from the
-            beginning.
+          description: Opaque cursor from a previous response. Omit to start from the beginning.
           required: false
           schema:
             type: string
@@ -395,34 +432,34 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: Events since cursor.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MerchantPortalShipmentCatchup"
-        "400":
+                $ref: '#/components/schemas/MerchantPortalShipmentCatchup'
+        '400':
           description: Invalid cursor.
-        "401":
+        '401':
           description: Missing or invalid API key.
       tags:
         - Shipments
     parameters: []
-  "/shipments/{tracking_id}":
+  /shipments/{tracking_id}:
     get:
       operationId: shipments_read
       summary: Get a shipment
       description: Fetch a single shipment by tracking ID.
       responses:
-        "200":
+        '200':
           description: Shipment.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MerchantPortalShipmentResponse"
-        "401":
+                $ref: '#/components/schemas/MerchantPortalShipmentResponse'
+        '401':
           description: Missing or invalid API key.
-        "404":
+        '404':
           description: Shipment not found.
       tags:
         - Shipments
@@ -432,21 +469,21 @@ paths:
         required: true
         schema:
           type: string
-  "/shipments/{tracking_id}/events":
+  /shipments/{tracking_id}/events:
     get:
       operationId: shipments_events_list
       summary: Get events for a shipment
       description: Chronological list of events for one shipment.
       responses:
-        "200":
+        '200':
           description: Event list.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MerchantPortalShipmentEventList"
-        "401":
+                $ref: '#/components/schemas/MerchantPortalShipmentEventList'
+        '401':
           description: Missing or invalid API key.
-        "404":
+        '404':
           description: Shipment not found.
       tags:
         - Shipments
@@ -456,23 +493,21 @@ paths:
         required: true
         schema:
           type: string
-  "/tracking/{tracking_id}":
+  /tracking/{tracking_id}:
     get:
       operationId: tracking_read
       summary: Track a shipment
-      description: "Public tracking lookup by tracking ID. Returns a rich,
-        customer-facing view of the shipment: headline status, journey summary,
-        and a personalised event timeline. No authentication required."
+      description: 'Public tracking lookup by tracking ID. Returns a rich, customer-facing view of the shipment: headline status, journey summary, and a personalised event timeline. No authentication required.'
       responses:
-        "200":
+        '200':
           description: Shipment tracking.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MerchantPortalTrackingResponse"
-        "404":
+                $ref: '#/components/schemas/MerchantPortalTrackingResponse'
+        '404':
           description: Tracking ID not found.
-        "429":
+        '429':
           description: Rate limit exceeded.
       tags:
         - Tracking
@@ -487,10 +522,9 @@ servers:
 components:
   securitySchemes:
     Bearer:
-      type: apiKey
-      name: Authorization
-      in: header
-      description: JWT Authorization header using the Bearer scheme.
+      type: http
+      scheme: bearer
+      description: Your Sprint Connect API key. Use a test key (it starts with sk_test_) in the sandbox. Requests from this page go from your browser straight to the API.
   schemas:
     MerchantPortalInterstateBulkPackage:
       required:
@@ -505,7 +539,7 @@ components:
         merchant_reference:
           title: Merchant reference
           type: string
-          default: ""
+          default: ''
           maxLength: 100
         destination_state:
           title: Destination state
@@ -553,7 +587,7 @@ components:
         package_description:
           title: Package description
           type: string
-          default: ""
+          default: ''
           maxLength: 500
         declared_value:
           title: Declared value
@@ -563,7 +597,7 @@ components:
         special_instructions:
           title: Special instructions
           type: string
-          default: ""
+          default: ''
           maxLength: 500
     MerchantPortalInterstateBulkRateRequest:
       required:
@@ -603,11 +637,10 @@ components:
         packages:
           type: array
           items:
-            $ref: "#/components/schemas/MerchantPortalInterstateBulkPackage"
+            $ref: '#/components/schemas/MerchantPortalInterstateBulkPackage'
         shared_pickup_fee:
           title: Shared pickup fee
-          description: Optional shared pickup fee, divided evenly across the batch. If
-            omitted, the pricing engine's default bulk pickup fee is used.
+          description: Optional shared pickup fee, divided evenly across the batch. If omitted, the pricing engine's default bulk pickup fee is used.
           type: string
           format: decimal
           nullable: true
@@ -714,7 +747,7 @@ components:
         packages:
           type: array
           items:
-            $ref: "#/components/schemas/MerchantPortalInterstateBulkPackage"
+            $ref: '#/components/schemas/MerchantPortalInterstateBulkPackage'
         shared_pickup_fee:
           title: Shared pickup fee
           type: string
@@ -806,10 +839,9 @@ components:
       properties:
         merchant_reference:
           title: Merchant reference
-          description: Per-package reference. Echoed back in the response for
-            reconciliation.
+          description: Per-package reference. Echoed back in the response for reconciliation.
           type: string
-          default: ""
+          default: ''
           maxLength: 100
         dropoff_address:
           title: Dropoff address
@@ -844,7 +876,7 @@ components:
         package_description:
           title: Package description
           type: string
-          default: ""
+          default: ''
           maxLength: 500
         is_fragile:
           title: Is fragile
@@ -853,7 +885,7 @@ components:
         special_instructions:
           title: Special instructions
           type: string
-          default: ""
+          default: ''
           maxLength: 500
     MerchantPortalLocalBulkRateRequest:
       required:
@@ -869,12 +901,10 @@ components:
         packages:
           type: array
           items:
-            $ref: "#/components/schemas/MerchantPortalLocalBulkPackage"
+            $ref: '#/components/schemas/MerchantPortalLocalBulkPackage'
         shared_pickup_fee:
           title: Shared pickup fee
-          description: Optional fee divided evenly across the batch. If omitted, each
-            package is priced at the zone-matrix rate with no extra pickup
-            charge.
+          description: Optional fee divided evenly across the batch. If omitted, each package is priced at the zone-matrix rate with no extra pickup charge.
           type: string
           format: decimal
           nullable: true
@@ -895,8 +925,7 @@ components:
       properties:
         quote_id:
           title: Quote id
-          description: Signed bulk local quote identifier. Pass this to POST
-            /v1/local/bulk/shipments.
+          description: Signed bulk local quote identifier. Pass this to POST /v1/local/bulk/shipments.
           type: string
           minLength: 1
         pickup_zone:
@@ -979,7 +1008,7 @@ components:
         packages:
           type: array
           items:
-            $ref: "#/components/schemas/MerchantPortalLocalBulkPackage"
+            $ref: '#/components/schemas/MerchantPortalLocalBulkPackage'
     MerchantPortalLocalBulkShipmentResponse:
       required:
         - batch_id
@@ -1077,8 +1106,7 @@ components:
           minLength: 1
         package_type:
           title: Package type
-          description: "Drives the vehicle class for this delivery: document/small → bike,
-            medium → car, large/custom → van."
+          description: 'Drives the vehicle class for this delivery: document/small → bike, medium → car, large/custom → van.'
           type: string
           enum:
             - document
@@ -1125,7 +1153,7 @@ components:
           minLength: 1
         vehicle_type:
           title: Vehicle type
-          description: "Vehicle class derived from package_type: bike, car, or van."
+          description: 'Vehicle class derived from package_type: bike, car, or van.'
           type: string
           minLength: 1
         pickup_address:
@@ -1183,7 +1211,7 @@ components:
           title: Merchant reference
           description: The merchant's own order ID. Echoed back on every response.
           type: string
-          default: ""
+          default: ''
           maxLength: 100
         pickup_address:
           title: Pickup address
@@ -1238,7 +1266,7 @@ components:
         package_description:
           title: Package description
           type: string
-          default: ""
+          default: ''
           maxLength: 500
         is_fragile:
           title: Is fragile
@@ -1247,7 +1275,7 @@ components:
         special_instructions:
           title: Special instructions
           type: string
-          default: ""
+          default: ''
           maxLength: 500
     MerchantPortalLocalShipmentResponse:
       required:
@@ -1449,11 +1477,9 @@ components:
           minLength: 1
         merchant_reference:
           title: Merchant reference
-          description: The merchant's own order ID. Echoed back on every response and
-            every event so the merchant can reconcile without a secondary
-            lookup. Free-form; not unique-enforced.
+          description: The merchant's own order ID. Echoed back on every response and every event so the merchant can reconcile without a secondary lookup. Free-form; not unique-enforced.
           type: string
-          default: ""
+          default: ''
           maxLength: 100
         origin_state:
           title: Origin state
@@ -1486,7 +1512,7 @@ components:
         package_description:
           title: Package description
           type: string
-          default: ""
+          default: ''
           maxLength: 500
         declared_value:
           title: Declared value
@@ -1536,7 +1562,7 @@ components:
         special_instructions:
           title: Special instructions
           type: string
-          default: ""
+          default: ''
           maxLength: 500
     MerchantPortalShipmentResponse:
       required:
@@ -1602,14 +1628,12 @@ components:
           default: false
         service_type:
           title: Service type
-          description: "One of: interstate_single, interstate_bulk, local. Classifies the
-            shipment for merchant-portal display."
+          description: 'One of: interstate_single, interstate_bulk, local. Classifies the shipment for merchant-portal display.'
           type: string
           minLength: 1
         environment:
           title: Environment
-          description: "One of: test, live. Matches the API key environment that created
-            the shipment."
+          description: 'One of: test, live. Matches the API key environment that created the shipment.'
           type: string
           minLength: 1
         balance_after:
@@ -1665,8 +1689,7 @@ components:
           format: date-time
         cursor:
           title: Cursor
-          description: Opaque cursor. Pass as `since_cursor` to /v1/shipments/catchup to
-            resume from this event.
+          description: Opaque cursor. Pass as `since_cursor` to /v1/shipments/catchup to resume from this event.
           type: string
           minLength: 1
     MerchantPortalShipmentCatchup:
@@ -1679,7 +1702,7 @@ components:
         events:
           type: array
           items:
-            $ref: "#/components/schemas/MerchantPortalShipmentEvent"
+            $ref: '#/components/schemas/MerchantPortalShipmentEvent'
         next_cursor:
           title: Next cursor
           type: string
@@ -1702,7 +1725,7 @@ components:
         events:
           type: array
           items:
-            $ref: "#/components/schemas/MerchantPortalShipmentEvent"
+            $ref: '#/components/schemas/MerchantPortalShipmentEvent'
         count:
           title: Count
           type: integer
@@ -1750,8 +1773,7 @@ components:
           nullable: true
         eta_label:
           title: Eta label
-          description: Pre-formatted ETA, e.g. 'Arrives in 2 days' or 'Delivered on 25
-            Sep'. Empty when not applicable.
+          description: Pre-formatted ETA, e.g. 'Arrives in 2 days' or 'Delivered on 25 Sep'. Empty when not applicable.
           type: string
     MerchantPortalTrackingEvent:
       required:
@@ -1847,8 +1869,8 @@ components:
           format: date-time
           nullable: true
         journey:
-          $ref: "#/components/schemas/MerchantPortalTrackingJourney"
+          $ref: '#/components/schemas/MerchantPortalTrackingJourney'
         events:
           type: array
           items:
-            $ref: "#/components/schemas/MerchantPortalTrackingEvent"
+            $ref: '#/components/schemas/MerchantPortalTrackingEvent'
